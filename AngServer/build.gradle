@@ -1,0 +1,48 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.0.BUILD-SNAPSHOT'
+	}
+	repositories {
+		mavenCentral()
+		maven { url "https://repo.spring.io/snapshot" }
+		maven { url "https://repo.spring.io/milestone" }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("org.springframework:springloaded:1.2.4.RELEASE")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = 'AngServer'
+	version = '0.0.1-SNAPSHOT'
+}
+
+sourceCompatibility = 1.8  
+targetCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	maven { url "https://repo.spring.io/snapshot" }
+	maven { url "https://repo.spring.io/milestone" }
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.apache.httpcomponents:httpcore:4.4.1')
+	compile('org.apache.httpcomponents:httpclient:4.5')
+	compile('com.google.guava:guava:14.0.1')
+	compile('org.springframework.boot:spring-boot-devtools')
+	compile('org.codehaus.jackson:jackson-mapper-asl:1.9.13')
+	compile('com.google.code.gson:gson:2.3.1')
+	
+	runtime('org.hsqldb:hsqldb')
+	runtime('mysql:mysql-connector-java')	 
+	testCompile("junit:junit")
+}
