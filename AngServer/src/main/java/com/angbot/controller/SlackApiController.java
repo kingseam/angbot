@@ -1,5 +1,6 @@
 package com.angbot.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -17,16 +18,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.angbot.common.SlackRestTemplate;
 import com.angbot.domain.User;
 import com.angbot.repository.UserRepository;
+import com.angbot.slack.dto.ApiUserDto;
+import com.angbot.slack.object.SUser;
+import com.angbot.util.BizException;
 import com.angbot.util.CodeS;
 import com.google.common.collect.Maps;
-import com.google.gson.JsonArray;
 
 @RestController
 @RequestMapping("/api/slack")
 public class SlackApiController {
 
 	@Autowired
-	UserRepository angbotRepository;
+	UserRepository userRepository;
 
 	@Autowired
 	SlackRestTemplate slackRestTemplate;
@@ -42,10 +45,22 @@ public class SlackApiController {
 		param.put("token", token);
 		param.put("pretty", 1);		
 		
-		//TODO User Class 부터 만들고 호출 . 현재 slack json model 확인중 
-		slackRestTemplate.getApiCaller(CodeS.GET_USERS.getUrl(), User.class, param);
+		ApiUserDto userDto = new ApiUserDto();
+		userDto = slackRestTemplate.getApiCaller(CodeS.GET_USERS.getUrl(), userDto.getClass(), param);
+		
+		if(userDto.isResult()){
+			User user = new User();
+			for(SUser sUser : userDto.getResponseItem()){
+				user = new User(sUser);				
+				if(!userRepository.exists(sUser.getId())){
+					userRepository.save(user);
+				}
+			}			
+		}else{
+			return new ResponseEntity<BizException>(new BizException(CodeS.S_E001), HttpStatus.NO_CONTENT);
+		}
 
-		return new ResponseEntity<String>("ok", HttpStatus.CREATED);
+		return new ResponseEntity<String>("slack api ok", HttpStatus.CREATED);
 	}
 
 }

@@ -22,8 +22,6 @@ import com.angbot.repository.UserRepository;
 @RequestMapping("/api")
 public class RestApiController {
 
-	@Autowired
-	UserRepository angbotRepository;
 	
 	public static final Logger logger = LoggerFactory.getLogger(RestApiController.class);
 
@@ -38,7 +36,7 @@ public class RestApiController {
 	@RequestMapping(value = "/user/", method = RequestMethod.POST)
 	public ResponseEntity<?> createUser(@RequestBody User user) {
 
-		angbotRepository.save(user);
+		
 
 		HttpHeaders headers = new HttpHeaders();		
 		return new ResponseEntity<String>(headers, HttpStatus.CREATED);

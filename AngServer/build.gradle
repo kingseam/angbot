@@ -41,6 +41,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-devtools')
 	compile('org.codehaus.jackson:jackson-mapper-asl:1.9.13')
 	compile('com.google.code.gson:gson:2.3.1')
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 	
 	runtime('org.hsqldb:hsqldb')
 	runtime('mysql:mysql-connector-java')	 

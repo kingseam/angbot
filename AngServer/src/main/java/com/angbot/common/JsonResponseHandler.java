@@ -16,12 +16,8 @@ public class JsonResponseHandler implements IResponseHandler {
 
 		ObjectMapper om = new ObjectMapper();
 		
-		om.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		
-		System.out.println("aaaa="+response.getBody());
+		om.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);		
 		T resultObject = om.readValue(response.getBody(), callback);
-		
-		System.out.println("aaaa="+resultObject);
 
 		return resultObject;
 
