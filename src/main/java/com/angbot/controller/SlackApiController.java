@@ -52,7 +52,10 @@ public class SlackApiController {
 	public static final Logger LOG = LoggerFactory.getLogger(SlackApiController.class);
 	
 	@RequestMapping(value = "/user/list", method = RequestMethod.GET)
-	public @ResponseBody ApiResDto activeUser() {		
+	public @ResponseBody ApiResDto activeUser() {
+		ApiResDto resDto  = new ApiResDto("activeUser");
+		
+		/* Set Slack User Info Param */ 
 		Map<String, Object> param = Maps.newConcurrentMap();
 		param.put("token", token);
 		param.put("pretty", 1);
@@ -60,6 +63,7 @@ public class SlackApiController {
 		ApiUserDto userDto = new ApiUserDto();
 		userDto = slackRestTemplate.getApiCaller(CodeS.GET_USERS.getUrl(), userDto.getClass(), param);
 		
+		/* Response Api */
 		if(userDto.isResult()){
 			User user = new User();
 			for(SUser sUser : userDto.getResponseItem()){
@@ -70,10 +74,10 @@ public class SlackApiController {
 			}			
 		}
 		
+		/* Query Active User */ 
 		Specifications<User> specifications = Specifications.where(SlackSpecification.activeUser("active"));
 		List<User> list = userRepository.findAll(specifications);
 		
-		ApiResDto resDto  = new ApiResDto("activeUser");
 		resDto.getData().put("userList", list);		
 		
 		return resDto;
