@@ -50,9 +50,9 @@ public class SlackApiController {
 	private String token;
 
 	public static final Logger LOG = LoggerFactory.getLogger(SlackApiController.class);
-
-	@RequestMapping(value = "/user/sync", method = RequestMethod.GET)
-	public ResponseEntity<?> testUsers() {		
+	
+	@RequestMapping(value = "/user/list", method = RequestMethod.GET)
+	public @ResponseBody ApiResDto activeUser() {		
 		Map<String, Object> param = Maps.newConcurrentMap();
 		param.put("token", token);
 		param.put("pretty", 1);
@@ -68,16 +68,8 @@ public class SlackApiController {
 				ApiPresenceDto result = slackRestTemplate.getApiCaller(CodeS.GET_Active.getUrl(), ApiPresenceDto.class, param);
 				userRepository.save( new User(user, result.getPresence()));
 			}			
-			
-		}else{
-			return new ResponseEntity<BizException>(new BizException(CodeS.S_E001), HttpStatus.NO_CONTENT);
 		}
-
-		return new ResponseEntity<String>("slack api ok", HttpStatus.CREATED);
-	}
-	
-	@RequestMapping(value = "/user/list", method = RequestMethod.GET)
-	public @ResponseBody ApiResDto activeUser() {		
+		
 		Specifications<User> specifications = Specifications.where(SlackSpecification.activeUser("active"));
 		List<User> list = userRepository.findAll(specifications);
 		
