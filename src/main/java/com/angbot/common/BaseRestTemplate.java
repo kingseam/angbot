@@ -11,7 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -19,19 +18,19 @@ import org.springframework.web.client.RestTemplate;
 
 
 @Service
-public class SlackRestTemplate {
+public class BaseRestTemplate {
 
-	private static final Logger LOG = LoggerFactory.getLogger(SlackRestTemplate.class);
+	private static final Logger LOG = LoggerFactory.getLogger(BaseRestTemplate.class);
 
 	private static final String DEFAULT_CONTENT_TYPE_VALUE = "application/json;charset=utf-8";
-	private static final int DEAULT_CONNECTION_TIME_OUT = 12000;
+	private static final int DEAULT_CONNECTION_TIME_OUT = 10000;
 	private static final int DEAULT_REQUEST_TIME_OUT = 10000;
 
 	private RestTemplate restTemplate;
 	private HttpComponentsClientHttpRequestFactory requestFactory;
 	private HttpHeaders headers;
 
-	public SlackRestTemplate() {
+	public BaseRestTemplate() {
 		try {
 			restTemplate = new RestTemplate();
 			setClientFactory();
@@ -48,11 +47,7 @@ public class SlackRestTemplate {
 		requestFactory.setConnectionRequestTimeout(DEAULT_REQUEST_TIME_OUT);
 		requestFactory.setConnectTimeout(DEAULT_CONNECTION_TIME_OUT);
 	}
-
-	public ClientHttpRequestFactory getClientFactory() {
-		return requestFactory;
-	}
-
+	
 	public HttpHeaders getHttpHeaders() {
 		return headers;
 	}

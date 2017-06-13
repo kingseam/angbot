@@ -2,8 +2,6 @@ package com.angbot.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.angbot.slack.object.SUser;
@@ -19,14 +17,41 @@ public class User {
 
 	@Column(name = "name")
 	private String name;
-	
+
+	@Column(name = "active")
+	private String active;
+
 	public User() {
-	
+
 	}
 
-	public User(SUser user) {		
+	public User(SUser user) {
 		this.nick = user.getName();
-		this.id  = user.getId();
+		this.id = user.getId();
 		this.name = user.getReal_name();
 	}
+	
+	public User(User user, String active) {
+		this.nick = user.getNick();
+		this.id = user.getId();
+		this.name = user.getName();
+		this.active = active;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public String getNick() {
+		return nick;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getActive() {
+		return active;
+	}
+
 }

@@ -2,6 +2,7 @@ package com.angbot.util;
 
 public enum CodeS {
 	GET_USERS("/api/users.list?token={token}&pretty={pretty}"),
+	GET_Active("/api/users.getPresence?token={token}&user={user}"),
 	
 	S_E001("Slack Api 연동 실패", "001"),
 	
