@@ -27,15 +27,13 @@ import com.angbot.slack.dto.ApiUserDto;
 import com.angbot.slack.object.SUser;
 import com.angbot.spac.SlackSpecification;
 import com.angbot.util.ApiResDto;
-import com.angbot.util.BizException;
 import com.angbot.util.CodeS;
 import com.google.common.collect.Maps;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+
 
 @RestController
 @RequestMapping("/api/slack")
-public class SlackApiController {
+public class SlackApiController extends BaseApiController {
 
 	@Autowired
 	UserRepository userRepository;
