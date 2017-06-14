@@ -3,6 +3,7 @@
 /gradle/
 /bin/
 !gradle/wrapper/gradle-wrapper.jar
+.properties
 
 ### STS ###
 .apt_generated
@@ -26,4 +27,3 @@ dist/
 nbdist/
 .nb-gradle/
 
-application.properties
