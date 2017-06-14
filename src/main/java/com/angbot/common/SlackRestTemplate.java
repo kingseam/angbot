@@ -16,6 +16,8 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.angbot.slack.dto.ApiBaseDto;
+
 
 
 @Service
@@ -62,7 +64,7 @@ public class SlackRestTemplate {
 		headers.add(HttpHeaders.CONTENT_TYPE, DEFAULT_CONTENT_TYPE_VALUE);
 	}
 
-	public <T extends Object> T getApiCaller(String url, Class<T> callback, Map<String, Object> param) {
+	public <T extends ApiBaseDto> T getApiCaller(String url, Class<T> callback, Map<String, Object> param) {
 
 		LOG.info("Request >> " + url);
 		LOG.info("param >> " + param);
