@@ -6,7 +6,7 @@ public class BizException {
 	private String errorCode;
     private String errorMessage;
 
-    public BizException(CodeS code){
+    public BizException(CodeSlack code){
     	this.errorCode = code.getCode();
     	this.errorMessage = code.getMessage();
     }

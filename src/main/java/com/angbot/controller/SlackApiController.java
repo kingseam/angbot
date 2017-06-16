@@ -1,5 +1,6 @@
 package com.angbot.controller;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -18,12 +19,14 @@ import com.angbot.common.BaseRestTemplate;
 import com.angbot.common.SlackRestTemplate;
 import com.angbot.domain.User;
 import com.angbot.repository.UserRepository;
+import com.angbot.slack.dto.ApiChannelDto;
 import com.angbot.slack.dto.ApiPresenceDto;
 import com.angbot.slack.dto.ApiUserDto;
+import com.angbot.slack.object.Channel;
 import com.angbot.slack.object.SUser;
 import com.angbot.spac.SlackSpecification;
 import com.angbot.util.ApiResDto;
-import com.angbot.util.CodeS;
+import com.angbot.util.CodeSlack;
 import com.google.common.collect.Maps;
 
 
@@ -55,7 +58,7 @@ public class SlackApiController extends BaseApiController {
 		param.put("pretty", 1);
 		
 		ApiUserDto userDto = new ApiUserDto();
-		userDto = slackRestTemplate.getApiCaller(CodeS.GET_USERS.getUrl(), userDto.getClass(), param);
+		userDto = slackRestTemplate.getApiCaller(CodeSlack.GET_USERS.getUrl(), userDto.getClass(), param);
 		
 		/* Response Api */
 		if(userDto.isResult()){
@@ -63,7 +66,7 @@ public class SlackApiController extends BaseApiController {
 			for(SUser sUser : userDto.getResponseItem()){
 				user = new User(sUser);				
 				param.put("user", user.getId());
-				ApiPresenceDto result = slackRestTemplate.getApiCaller(CodeS.GET_Active.getUrl(), ApiPresenceDto.class, param);
+				ApiPresenceDto result = slackRestTemplate.getApiCaller(CodeSlack.GET_Active.getUrl(), ApiPresenceDto.class, param);
 				userRepository.save( new User(user, result.getPresence()));
 			}			
 		}
@@ -73,6 +76,53 @@ public class SlackApiController extends BaseApiController {
 		List<User> list = userRepository.findAll(specifications);
 		
 		resDto.getData().put("userList", list);		
+		
+		return resDto;
+	}
+	
+	@RequestMapping(value = "/channel/list", method = RequestMethod.GET)
+	public @ResponseBody ApiResDto channelList() {
+		ApiResDto resDto  = new ApiResDto("channelList");
+		
+		/* Set Slack User Info Param */ 
+		boolean isCreator = false;
+		Map<String, Object> param = Maps.newConcurrentMap();
+		param.put("token", token);
+		
+		ApiChannelDto chanDto = new ApiChannelDto();
+		chanDto = slackRestTemplate.getApiCaller(CodeSlack.GET_CHANEELS.getUrl(), chanDto.getClass(), param);
+		
+		LOG.info("channels = {}", chanDto.getResponseItem());
+		
+		List<User> list = userRepository.findAll();
+		
+		//id 기준 정렬 그냥 심심해서 람다 써봄 ㅋ 의미 없음.
+		list.sort( (User x, User y) -> x.getId().compareTo(y.getId()));
+		
+		for(Channel channel : chanDto.getResponseItem()){
+			for(User user : list){
+				if(channel.getTopic().getCreator().equals(user.getId())){
+					channel.setId(user.getNick());
+					isCreator = true; 
+					break;
+				}
+				if(channel.getPurpose().getCreator().equals(user.getId())){
+					if(!isCreator){
+						channel.setId(user.getNick());
+						break;
+					}
+				}
+			}
+			isCreator = false;
+			String subject = "";
+			subject = channel.getTopic().getValue() != null && !channel.getTopic().getValue().equals("") ? channel.getTopic().getValue() : channel.getPurpose().getValue();			
+			channel.setSubject(subject);
+		}
+		
+		// channel member sort desc
+		chanDto.getResponseItem().sort((Channel x, Channel y)  -> Integer.valueOf(y.getNum_members()) - Integer.valueOf(x.getNum_members()) );
+		
+		resDto.getData().put("channelList", chanDto.getResponseItem());
 		
 		return resDto;
 	}

@@ -1,8 +1,9 @@
 package com.angbot.util;
 
-public enum CodeS {
+public enum CodeSlack {
 	GET_USERS("/api/users.list?token={token}&pretty={pretty}"),
 	GET_Active("/api/users.getPresence?token={token}&user={user}"),
+	GET_CHANEELS("/api/channels.list?token={token}&exclude_members=false&exclude_archived=false"),
 	
 	S_E001("Slack Api 연동 실패", "001"),
 	
@@ -14,11 +15,11 @@ public enum CodeS {
 	
 	private final String BASE_URL = "https://slack.com";
 
-	private CodeS(String url) {
+	private CodeSlack(String url) {
 		this.url = url;
 	}
 	
-	private CodeS(String message, String code) {		
+	private CodeSlack(String message, String code) {		
 		this.message = message;
 		this.code = code;
 	}

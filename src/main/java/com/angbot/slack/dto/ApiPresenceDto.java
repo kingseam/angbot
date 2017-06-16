@@ -1,7 +1,6 @@
 package com.angbot.slack.dto;
 
 public class ApiPresenceDto extends ApiBaseDto {
-	private boolean ok;
 	private String presence;
 	private String online;
 	private String auto_away;
@@ -9,13 +8,6 @@ public class ApiPresenceDto extends ApiBaseDto {
 	private String connection_count;
 	private String last_activity;
 
-	public boolean isOk() {
-		return ok;
-	}
-
-	public void setOk(boolean ok) {
-		this.ok = ok;
-	}
 
 	public String getPresence() {
 		return presence;
