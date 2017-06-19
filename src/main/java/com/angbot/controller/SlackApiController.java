@@ -132,8 +132,7 @@ public class SlackApiController extends BaseApiController {
 		}
 
 		// channel member sort desc
-		chanDto.getResponseItem().sort(
-				(Channel x, Channel y) -> Integer.valueOf(y.getNum_members()) - Integer.valueOf(x.getNum_members()));
+		chanDto.getResponseItem().sort((Channel x, Channel y) -> Integer.valueOf(y.getNum_members()) - Integer.valueOf(x.getNum_members()));
 
 		resDto.getData().put("channelList", chanDto.getResponseItem());
 
@@ -150,18 +149,18 @@ public class SlackApiController extends BaseApiController {
 		param.put("token", token);
 		param.put("pretty", 1);		
 		if(websocket == null || websocket.userSession == null){
-				rtmDto = slackRestTemplate.getApiCaller(CodeSlack.GET_RTMSTART.getUrl(), rtmDto.getClass(), param);
-				if (rtmDto.isResult()) {
-					websocket = new WebsocketClientEndpoint.WebsocketClientBuilder().setURI(rtmDto.getUrl()).setServer(new SlackMessageHandler()).build();
-					Map<String, String> message = Maps.newConcurrentMap();
-					message.put("type", "message");
-					message.put("channel", "C2F31LCTZ");
-					message.put("text", "`angbot RTM serv start...`");
-					
-					ObjectMapper om = new ObjectMapper();			
-					websocket.sendMessage(om.writeValueAsString(message));
-					Thread.sleep(25000);
-				}
+			rtmDto = slackRestTemplate.getApiCaller(CodeSlack.GET_RTMSTART.getUrl(), rtmDto.getClass(), param);
+			if (rtmDto.isResult()) {
+				websocket = new WebsocketClientEndpoint.WebsocketClientBuilder().setURI(rtmDto.getUrl()).setServer(new SlackMessageHandler()).build();
+				Map<String, String> message = Maps.newConcurrentMap();
+				message.put("type", "message");
+				message.put("channel", "C2F31LCTZ");
+				message.put("text", "`angbot RTM serv start...`");
+				
+				ObjectMapper om = new ObjectMapper();			
+				websocket.sendMessage(om.writeValueAsString(message));
+				Thread.sleep(25000);
+			}
 		}
 
 		return resDto;
