@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan({"com.angbot.controller","com.angbot.common"})
+@ComponentScan({"com.angbot.controller","com.angbot.common","com.angbot.commands"})
 @EntityScan("com.angbot.domain")
 @EnableJpaRepositories("com.angbot.repository")
 public class Application extends SpringBootServletInitializer {
