@@ -18,8 +18,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.angbot.slack.dto.ApiBaseDto;
 
-
-
 @Service
 public class SlackRestTemplate {
 
@@ -91,7 +89,6 @@ public class SlackRestTemplate {
 		return responseHandler(response, callback);
 	}
 
-	
 	public <T> T responseHandler(ResponseEntity<String> response, Class<T> callback) {
 		IResponseHandler responseHandler = new JsonResponseHandler();
 		T resultObject = null;
@@ -104,7 +101,7 @@ public class SlackRestTemplate {
 				e.printStackTrace();
 			}
 		} else {
-			//TODO throw new BizMsgException(errorMessage.getMessage());
+			// TODO throw new BizMsgException(errorMessage.getMessage());
 		}
 
 		return resultObject;

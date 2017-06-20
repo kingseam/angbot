@@ -1,7 +1,6 @@
 package com.angbot.service;
 
 import java.util.HashMap;
-
 import java.util.Map;
 
 import com.angbot.commands.HelpCommand;

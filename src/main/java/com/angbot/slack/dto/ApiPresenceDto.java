@@ -8,7 +8,6 @@ public class ApiPresenceDto extends ApiBaseDto {
 	private String connection_count;
 	private String last_activity;
 
-
 	public String getPresence() {
 		return presence;
 	}
