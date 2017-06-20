@@ -4,30 +4,29 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import com.angbot.service.CommandApiService;
-import com.angbot.util.PrintToSlackUtil;
 
-public class HelpCommand extends CommCommand{
+public class NaverDocumentCommand extends CommCommand{
 	
-	public HelpCommand(CommandApiService service) {
+	public NaverDocumentCommand(CommandApiService service) {
 		super(service);
 	}
 	
 	@Override
 	public String command() {
-		return "!사용법";
+		return "!사전";
 	}
 	
 	@Override
 	public String run(StringTokenizer token) throws Exception {
-		// TODO Auto-generated method stub
 		if(!this.validation(token)){
-			return "`ex) !사용법 (파라매터 없음)`";
+			return "`ex) !사전 단어명`";
 		}
-		return PrintToSlackUtil.printHelp();
+		
+		return this.service.searchMap(token);
 	}
 	
 	public boolean validation(StringTokenizer token){		
-		if(token.countTokens() > 0){
+		if(token.countTokens() <= 0){
 			return false;
 		}
 		return true;

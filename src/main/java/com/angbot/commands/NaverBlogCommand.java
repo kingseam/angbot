@@ -6,28 +6,28 @@ import java.util.StringTokenizer;
 import com.angbot.service.CommandApiService;
 import com.angbot.util.PrintToSlackUtil;
 
-public class HelpCommand extends CommCommand{
+public class NaverBlogCommand extends CommCommand{
 	
-	public HelpCommand(CommandApiService service) {
+	public NaverBlogCommand(CommandApiService service) {
 		super(service);
 	}
 	
 	@Override
 	public String command() {
-		return "!사용법";
+		return "!검색";
 	}
 	
 	@Override
 	public String run(StringTokenizer token) throws Exception {
-		// TODO Auto-generated method stub
 		if(!this.validation(token)){
-			return "`ex) !사용법 (파라매터 없음)`";
+			return "`ex) !검색 검색명`";
 		}
-		return PrintToSlackUtil.printHelp();
+		
+		return this.service.searchBlog(token);
 	}
 	
 	public boolean validation(StringTokenizer token){		
-		if(token.countTokens() > 0){
+		if(token.countTokens() <= 0){
 			return false;
 		}
 		return true;

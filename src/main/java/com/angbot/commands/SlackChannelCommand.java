@@ -8,6 +8,7 @@ import com.angbot.service.CommandApiService;
 
 @Service
 public class SlackChannelCommand extends CommCommand{
+	boolean state = false;
 	
 	public SlackChannelCommand(CommandApiService service) {
 		super(service);
@@ -20,10 +21,12 @@ public class SlackChannelCommand extends CommCommand{
 	@Override
 	public String run(StringTokenizer token) throws Exception {
 		if(!this.validation(token)){
-			return "ex) !채널 (파라매터 없음)";
+			return "`ex) !채널 (파라매터 없음)`";
 		}
-		
-		return this.service.channelList();
+		state = true;
+		String result = this.service.channelList();
+		state = false;
+		return result;
 	}
 	
 	public boolean validation(StringTokenizer token){		
@@ -31,5 +34,10 @@ public class SlackChannelCommand extends CommCommand{
 			return false;
 		}
 		return true;
+	}
+	
+	@Override
+	public boolean isState() {
+		return state;
 	}
 }

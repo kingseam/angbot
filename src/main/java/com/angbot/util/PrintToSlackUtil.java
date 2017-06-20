@@ -3,6 +3,7 @@ package com.angbot.util;
 import java.util.List;
 import java.util.Map;
 
+import com.angbot.domain.User;
 import com.angbot.slack.dto.ApiBaseDto;
 import com.angbot.slack.dto.ApiChannelDto;
 import com.angbot.slack.object.Channel;
@@ -56,4 +57,90 @@ public class PrintToSlackUtil{
 		return resultMsg.toString();
 	}
 	
+	public static String printDocument(List<Map<String, String>> items){
+		StringBuffer resultMsg = new StringBuffer();
+		
+		for(Map<String, String> map : items){
+			resultMsg.append("*[");
+			resultMsg.append(map.get("description").replaceAll("\\<.*?>",""));
+			resultMsg.append("]*\n");
+			resultMsg.append("[");
+			resultMsg.append(map.get("link").replaceAll("\\<.*?>",""));
+			resultMsg.append("]");
+		}
+		
+		return resultMsg.toString();
+	}
+	
+	public static String printCafe(List<Map<String, String>> items){
+		StringBuffer resultMsg = new StringBuffer();
+		
+		for(Map<String, String> map : items){
+			resultMsg.append("*[");
+			resultMsg.append(map.get("title").replaceAll("\\<.*?>",""));
+			resultMsg.append("]*\n");
+			resultMsg.append("[");
+			resultMsg.append(map.get("link").replaceAll("\\<.*?>",""));
+			resultMsg.append("](코드초보스터디카페)\n");
+		}
+		
+		return resultMsg.toString();
+	}
+	
+	
+	public static String printBlog(List<Map<String, String>> items){
+		StringBuffer resultMsg = new StringBuffer();
+		
+		for(Map<String, String> map : items){
+			resultMsg.append("*[");
+			resultMsg.append(map.get("title").replaceAll("\\<.*?>",""));
+			resultMsg.append("]*\n");
+			resultMsg.append("[");
+			resultMsg.append(map.get("link").replaceAll("\\<.*?>",""));
+			resultMsg.append("](블로그)\n");
+		}
+		
+		return resultMsg.toString();
+	}
+	
+	public static String printImage(List<Map<String, String>> items){
+		StringBuffer resultMsg = new StringBuffer();
+		
+		for(Map<String, String> map : items){
+			resultMsg.append("*[");
+			resultMsg.append(map.get("title").replaceAll("\\<.*?>",""));
+			resultMsg.append("]*\n");
+			resultMsg.append("[");
+			resultMsg.append(map.get("link").replaceAll("\\<.*?>",""));
+			resultMsg.append("]");
+		}
+		
+		return resultMsg.toString();
+	}
+	
+	public static String printUser(List<User> list){
+		StringBuffer resultMsg = new StringBuffer();
+		
+		resultMsg.append("```");
+		resultMsg.append("*접속 유저 정보("+list.size()+"명)*\n");
+		for(User user : list){
+			resultMsg.append(user.getNick().substring(0, user.getNick().length()-1)+"*");
+			if(user.getNick().equals("angbot")){
+				resultMsg.append(" => 얘는 봇 ");
+			}
+			if(user.getNick().equals("beginnerjsp")){
+				resultMsg.append(" => 여자킬러 ");
+			}
+			if(user.getNick().equals("eminency")){
+				resultMsg.append(" => 방장님 ");
+			}
+			if(user.getNick().equals("loustler")){
+				resultMsg.append(" => 모쏠 ");
+			}
+			resultMsg.append("\n");
+		}
+		resultMsg.append("```");
+		
+		return resultMsg.toString();
+	}
 }

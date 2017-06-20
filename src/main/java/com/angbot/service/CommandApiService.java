@@ -62,6 +62,170 @@ public class CommandApiService {
 
 	public static final Logger LOG = LoggerFactory.getLogger(CommandApiService.class);
 	
+	public String userList(){
+		/* Set Slack User Info Param */
+		Map<String, Object> param = Maps.newConcurrentMap();
+		param.put("token", token);
+		param.put("pretty", 1);
+
+		ApiUserDto userDto = new ApiUserDto();
+		userDto = slackRestTemplate.getApiCaller(CodeSlack.GET_USERS.getUrl(), userDto.getClass(), param);
+
+		/* Response Api */
+		if (userDto.isResult()) {
+			User user = new User();
+			for (SUser sUser : userDto.getResponseItem()) {
+				user = new User(sUser);
+				param.put("user", user.getId());
+				ApiPresenceDto result = slackRestTemplate.getApiCaller(CodeSlack.GET_Active.getUrl(), ApiPresenceDto.class, param);
+				userRepository.save(new User(user, result.getPresence()));
+			}
+		}
+
+		/* Query Active User */
+		Specifications<User> specifications = Specifications.where(SlackSpecification.activeUser("active"));
+		List<User> list = userRepository.findAll(specifications);
+
+		return PrintToSlackUtil.printUser(list);
+	}
+	
+	public String searchImage(StringTokenizer token){		
+		String msg = "";
+		
+		try{
+			String query = "";
+			
+			while(token.hasMoreTokens()){
+				query += token.nextToken();
+				if(token.countTokens() > 0) query += " ";
+			}
+			
+			Map<String, Object> param = Maps.newConcurrentMap();
+			param.put("query", query);
+			
+			String result = naverRestTemplate.getApiCaller(CodeNaver.GET_IMAGE.getUrl(), param);
+			
+			ObjectMapper om = new ObjectMapper();
+			Map<String, Object> map = Maps.newConcurrentMap();
+			map = om.readValue(result, Map.class);
+			
+			if(map.get("items") != null && ((List)map.get("items")).size() > 0){
+				msg = PrintToSlackUtil.printImage((List<Map<String,String>>)map.get("items"));
+			}else{
+				msg = "`검색 결과가 없습니다.`";
+			}
+		
+		}catch(Exception e){
+			//TODO 예외 확인 필요.
+			e.printStackTrace();
+		}
+		
+		return msg;
+	}
+	
+	public String searchBlog(StringTokenizer token){		
+		String msg = "";
+		
+		try{
+			String query = "";
+			
+			while(token.hasMoreTokens()){
+				query += token.nextToken();
+				if(token.countTokens() > 0) query += " ";
+			}
+			
+			Map<String, Object> param = Maps.newConcurrentMap();
+			param.put("query", query);
+			
+			String result = naverRestTemplate.getApiCaller(CodeNaver.GET_BLOG.getUrl(), param);
+			
+			ObjectMapper om = new ObjectMapper();
+			Map<String, Object> map = Maps.newConcurrentMap();
+			map = om.readValue(result, Map.class);
+			
+			if(map.get("items") != null && ((List)map.get("items")).size() > 0){
+				msg = PrintToSlackUtil.printBlog((List<Map<String,String>>)map.get("items"));
+			}else{
+				msg = "`검색 결과가 없습니다.`";
+			}
+		
+		}catch(Exception e){
+			//TODO 예외 확인 필요.
+			e.printStackTrace();
+		}
+		
+		return msg;
+	}
+	
+	public String searchDocument(StringTokenizer token){		
+		String msg = "";
+		
+		try{
+			String query = "";
+			
+			while(token.hasMoreTokens()){
+				query += token.nextToken();
+				if(token.countTokens() > 0) query += " ";
+			}
+			
+			Map<String, Object> param = Maps.newConcurrentMap();
+			param.put("query", query);
+			
+			String result = naverRestTemplate.getApiCaller(CodeNaver.GET_DOCUMENT.getUrl(), param);
+			
+			ObjectMapper om = new ObjectMapper();
+			Map<String, Object> map = Maps.newConcurrentMap();
+			map = om.readValue(result, Map.class);
+			
+			if(map.get("items") != null && ((List)map.get("items")).size() > 0){
+				msg = PrintToSlackUtil.printDocument((List<Map<String,String>>)map.get("items"));
+			}else{
+				msg = "`검색 결과가 없습니다.`";
+			}
+		
+		}catch(Exception e){
+			//TODO 예외 확인 필요.
+			e.printStackTrace();
+		}
+		
+		return msg;
+	}
+	
+	public String searchCafe(StringTokenizer token){		
+		String msg = "";
+		
+		try{
+			String query = "";
+			
+			while(token.hasMoreTokens()){
+				query += token.nextToken();
+				if(token.countTokens() > 0) query += " ";
+			}
+			
+			Map<String, Object> param = Maps.newConcurrentMap();
+			param.put("query", query);
+			
+			String result = naverRestTemplate.getApiCaller(CodeNaver.GET_CAFE.getUrl(), param);
+			
+			ObjectMapper om = new ObjectMapper();
+			Map<String, Object> map = Maps.newConcurrentMap();
+			map = om.readValue(result, Map.class);
+			
+			if(map.get("items") != null && ((List)map.get("items")).size() > 0){
+				msg = PrintToSlackUtil.printCafe((List<Map<String,String>>)map.get("items"));
+			}else{
+				msg = "`검색 결과가 없습니다.`";
+			}
+		
+		}catch(Exception e){
+			//TODO 예외 확인 필요.
+			e.printStackTrace();
+		}
+		
+		return msg;
+	}
+	
+	
 	public String searchMap(StringTokenizer token){		
 		String msg = "";
 		
@@ -84,9 +248,12 @@ public class CommandApiService {
 			
 			if(map.get("items") != null && ((List)map.get("items")).size() > 0){
 				msg = PrintToSlackUtil.printMap((List<Map<String,String>>)map.get("items"));
+			}else{
+				msg = "`검색 결과가 없습니다.`";
 			}
 		
 		}catch(Exception e){
+			//TODO 예외 확인 필요.
 			e.printStackTrace();
 		}
 		
@@ -144,6 +311,7 @@ public class CommandApiService {
 				SlackCmdCache.cmdMap.put(cmd.command(), cmd);				
 			}
 		}catch(Exception e){
+			//TODO 예외 확인 필요
 			e.printStackTrace();
 		}
 	}

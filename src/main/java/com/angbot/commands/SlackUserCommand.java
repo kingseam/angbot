@@ -1,11 +1,11 @@
 package com.angbot.commands;
 
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import com.angbot.service.CommandApiService;
 
 public class SlackUserCommand extends CommCommand{
+	boolean state = false;
 	
 	public SlackUserCommand(CommandApiService service) {
 		super(service);
@@ -13,11 +13,29 @@ public class SlackUserCommand extends CommCommand{
 	@Override
 	public String command() {
 		return "!유저";
-	}
+	}	
 	
 	@Override
 	public String run(StringTokenizer token) throws Exception {
-		// TODO Auto-generated method stub
-		return "`ok?`";
+		if(!this.validation(token)){
+			return "`ex) !유저 (파라매터 없음)`";
+		}		
+		this.state = true;
+		String msg = this.service.userList();
+		this.state = false;
+		return msg;
 	}
+	
+	public boolean validation(StringTokenizer token){		
+		if(token.countTokens() > 0){
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean isState() {
+		return state;
+	}
+	
 }

@@ -4,30 +4,29 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import com.angbot.service.CommandApiService;
-import com.angbot.util.PrintToSlackUtil;
 
-public class HelpCommand extends CommCommand{
+public class NaverImageCommand extends CommCommand{
 	
-	public HelpCommand(CommandApiService service) {
+	public NaverImageCommand(CommandApiService service) {
 		super(service);
 	}
 	
 	@Override
 	public String command() {
-		return "!사용법";
+		return "!이미지";
 	}
 	
 	@Override
 	public String run(StringTokenizer token) throws Exception {
-		// TODO Auto-generated method stub
 		if(!this.validation(token)){
-			return "`ex) !사용법 (파라매터 없음)`";
+			return "`ex) !이미지 이미지명`";
 		}
-		return PrintToSlackUtil.printHelp();
+		
+		return this.service.searchImage(token);
 	}
 	
 	public boolean validation(StringTokenizer token){		
-		if(token.countTokens() > 0){
+		if(token.countTokens() <= 0){
 			return false;
 		}
 		return true;

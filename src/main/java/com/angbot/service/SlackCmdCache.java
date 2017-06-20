@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.angbot.commands.HelpCommand;
+import com.angbot.commands.NaverBlogCommand;
+import com.angbot.commands.NaverCafeCommand;
+import com.angbot.commands.NaverDocumentCommand;
+import com.angbot.commands.NaverImageCommand;
 import com.angbot.commands.NaverMapCommand;
 import com.angbot.commands.SlackChannelCommand;
 import com.angbot.commands.SlackUserCommand;
@@ -16,7 +20,11 @@ public class SlackCmdCache {
 			NaverMapCommand.class, 
 			SlackUserCommand.class,
 			SlackChannelCommand.class,
-			HelpCommand.class
+			HelpCommand.class,
+			NaverBlogCommand.class,
+			NaverImageCommand.class,
+			NaverDocumentCommand.class,
+			NaverCafeCommand.class
     };
 	
 	public SlackCmdCache() {

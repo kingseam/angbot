@@ -2,6 +2,10 @@ package com.angbot.util;
 
 public enum CodeNaver {
 	GET_MAP("/v1/search/local.json?sort=random&display=1&query={query}"),
+	GET_BLOG("/v1/search/blog.json?display=1&sort=sim&query={query}"),
+	GET_IMAGE("/v1/search/image.json?display=1&sort=sim&filter=medium&query={query}"),
+	GET_DOCUMENT("/v1/search/encyc.json?display=1&query={query}"),
+	GET_CAFE("/v1/search/cafearticle.json?display=5&sort=date&query=javachobostudy"),
 	
 	S_E001("Naver Api 연동 실패", "001"),
 	

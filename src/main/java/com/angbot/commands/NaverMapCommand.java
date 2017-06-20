@@ -19,7 +19,7 @@ public class NaverMapCommand extends CommCommand{
 	@Override
 	public String run(StringTokenizer token) throws Exception {
 		if(!this.validation(token)){
-			return "ex) !어디야 장소명";
+			return "`ex) !어디야 장소명`";
 		}
 		
 		return this.service.searchMap(token);
@@ -30,5 +30,10 @@ public class NaverMapCommand extends CommCommand{
 			return false;
 		}
 		return true;
+	}
+	@Override
+	public boolean isState() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
