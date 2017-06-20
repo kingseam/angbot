@@ -62,38 +62,6 @@ public class SlackApiController extends BaseApiController {
 
 	public static final Logger LOG = LoggerFactory.getLogger(SlackApiController.class);
 
-	//@RequestMapping(value = "/user/list", method = RequestMethod.GET)
-	public @ResponseBody ApiResDto activeUser() {
-		ApiResDto resDto = new ApiResDto("activeUser");
-
-		/* Set Slack User Info Param */
-		Map<String, Object> param = Maps.newConcurrentMap();
-		param.put("token", token);
-		param.put("pretty", 1);
-
-		ApiUserDto userDto = new ApiUserDto();
-		userDto = slackRestTemplate.getApiCaller(CodeSlack.GET_USERS.getUrl(), userDto.getClass(), param);
-
-		/* Response Api */
-		if (userDto.isResult()) {
-			User user = new User();
-			for (SUser sUser : userDto.getResponseItem()) {
-				user = new User(sUser);
-				param.put("user", user.getId());
-				ApiPresenceDto result = slackRestTemplate.getApiCaller(CodeSlack.GET_Active.getUrl(), ApiPresenceDto.class, param);
-				userRepository.save(new User(user, result.getPresence()));
-			}
-		}
-
-		/* Query Active User */
-		Specifications<User> specifications = Specifications.where(SlackSpecification.activeUser("active"));
-		List<User> list = userRepository.findAll(specifications);
-
-		resDto.getData().put("userList", list);
-
-		return resDto;
-	}
-
 	@RequestMapping(value = "/rtm/connect", method = RequestMethod.GET)
 	public @ResponseBody ApiResDto rtmConnect() throws Exception {
 		ApiResDto resDto = new ApiResDto("rtmConnect");
