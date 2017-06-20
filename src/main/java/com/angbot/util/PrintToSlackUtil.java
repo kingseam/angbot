@@ -33,7 +33,7 @@ public class PrintToSlackUtil{
 	public static String printHelp(){		
 		StringBuffer resultMsg = new StringBuffer();		
 		resultMsg.append("```\n !어디야 : 찾고자 하는 명칭의 관련된 위치를 불러온다.");
-		resultMsg.append("\n !카페최신글 : 남궁성코드초보스터디 카페 최신글을 가져온다");
+		resultMsg.append("\n !카페 : 남궁성코드초보스터디 카페 최신글을 가져온다");
 		resultMsg.append("\n !검색 : 네이버 검색 중 유사도 높은 1개를 가져온다.");
 		resultMsg.append("\n !이미지 : 네이버 유사도 높은 이미지 1개를 가져온다.");
 		resultMsg.append("\n !사전 : 네이버 용어 사전 검색");
