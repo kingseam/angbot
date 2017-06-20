@@ -4,7 +4,9 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -24,6 +26,7 @@ import com.angbot.commands.SlackChannelCommand;
 import com.angbot.commands.SlackUserCommand;
 import com.angbot.common.BaseRestTemplate;
 import com.angbot.common.JsonResponseHandler;
+import com.angbot.common.NaverRestTemplate;
 import com.angbot.common.SlackRestTemplate;
 import com.angbot.common.WebsocketClientEndpoint;
 import com.angbot.controller.SlackApiController;
@@ -36,27 +39,59 @@ import com.angbot.slack.object.Channel;
 import com.angbot.slack.object.SUser;
 import com.angbot.spac.SlackSpecification;
 import com.angbot.util.ApiResDto;
+import com.angbot.util.CodeNaver;
 import com.angbot.util.CodeSlack;
 import com.angbot.util.PrintToSlackUtil;
 import com.google.common.collect.Maps;
 
 
 @Service
-public class SlackCommService {	
+public class CommandApiService {	
 	
 	@Autowired
 	UserRepository userRepository;
 
 	@Autowired
-	BaseRestTemplate bestRestTemplate;
-
+	SlackRestTemplate slackRestTemplate;
+	
 	@Autowired
-	SlackRestTemplate slackRestTemplate;	
+	NaverRestTemplate naverRestTemplate;
 
 	@Value("${slack.api.token}")
 	private String token;
 
-	public static final Logger LOG = LoggerFactory.getLogger(SlackCommService.class);	
+	public static final Logger LOG = LoggerFactory.getLogger(CommandApiService.class);
+	
+	public String searchMap(StringTokenizer token){		
+		String msg = "";
+		
+		try{
+			String query = "";
+			
+			while(token.hasMoreTokens()){
+				query += token.nextToken();
+				if(token.countTokens() > 0) query += " ";
+			}
+			
+			Map<String, Object> param = Maps.newConcurrentMap();
+			param.put("query", query);
+			
+			String result = naverRestTemplate.getApiCaller(CodeNaver.GET_MAP.getUrl(), param);
+			
+			ObjectMapper om = new ObjectMapper();
+			Map<String, Object> map = Maps.newConcurrentMap();
+			map = om.readValue(result, Map.class);
+			
+			if(map.get("items") != null && ((List)map.get("items")).size() > 0){
+				msg = PrintToSlackUtil.printMap((List<Map<String,String>>)map.get("items"));
+			}
+		
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return msg;
+	}
 	
 	public String channelList() {
 		/* Set Slack User Info Param */
@@ -104,7 +139,7 @@ public class SlackCommService {
 		CommCommand cmd = null;		
 		try{
 			for(Class clazz : SlackCmdCache.registerdCommands){
-				Constructor cons = clazz.getConstructor(new Class[] {SlackCommService.class});
+				Constructor cons = clazz.getConstructor(new Class[] {CommandApiService.class});
 				cmd = (CommCommand) cons.newInstance(this);
 				SlackCmdCache.cmdMap.put(cmd.command(), cmd);				
 			}

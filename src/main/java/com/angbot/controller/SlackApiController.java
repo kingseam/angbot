@@ -23,7 +23,7 @@ import com.angbot.common.SlackRestTemplate;
 import com.angbot.common.WebsocketClientEndpoint;
 import com.angbot.domain.User;
 import com.angbot.repository.UserRepository;
-import com.angbot.service.SlackCommService;
+import com.angbot.service.CommandApiService;
 import com.angbot.slack.dto.ApiChannelDto;
 import com.angbot.slack.dto.ApiPresenceDto;
 import com.angbot.slack.dto.ApiRealTimeMessageDto;
@@ -55,7 +55,7 @@ public class SlackApiController extends BaseApiController {
 	JsonResponseHandler jsonHandler;
 	
 	@Autowired
-	SlackCommService slackCommService;
+	CommandApiService slackCommService;
 
 	@Value("${slack.api.token}")
 	private String token;

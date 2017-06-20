@@ -3,11 +3,11 @@ package com.angbot.commands;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import com.angbot.service.SlackCommService;
+import com.angbot.service.CommandApiService;
 
 public class NaverMapCommand extends CommCommand{
 	
-	public NaverMapCommand(SlackCommService service) {
+	public NaverMapCommand(CommandApiService service) {
 		super(service);
 	}
 	
@@ -18,7 +18,17 @@ public class NaverMapCommand extends CommCommand{
 	
 	@Override
 	public String run(StringTokenizer token) throws Exception {
-		// TODO Auto-generated method stub
-		return "`네이버 검석해 그냥..?`";
+		if(!this.validation(token)){
+			return "ex) !어디야 장소명";
+		}
+		
+		return this.service.searchMap(token);
+	}
+	
+	public boolean validation(StringTokenizer token){		
+		if(token.countTokens() <= 0){
+			return false;
+		}
+		return true;
 	}
 }

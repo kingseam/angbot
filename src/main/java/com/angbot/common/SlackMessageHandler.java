@@ -6,20 +6,22 @@ import java.util.StringTokenizer;
 import javax.websocket.Session;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.context.annotation.ComponentScan;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.angbot.commands.CommCommand;
 import com.angbot.service.SlackCmdCache;
-import com.angbot.service.SlackCommService;
 import com.google.common.collect.Maps;
 
 public class SlackMessageHandler implements MessageHandler {
 	public final String CMD_TYPE = "!";
 	public final String MSG_TYPE = "message";
+	public static final Logger LOG = LoggerFactory.getLogger(SlackMessageHandler.class);
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void handleMessage(String message, Session userSession) {
+		LOG.info("meta data={}",message);
 		try{
 			ObjectMapper om = new ObjectMapper();
 			Map<String, String> result = Maps.newConcurrentMap();
@@ -31,13 +33,13 @@ public class SlackMessageHandler implements MessageHandler {
 					if(token.countTokens() > 0){
 						cmd = token.nextToken();
 					}
-					
 					if(SlackCmdCache.cmdMap.containsKey(cmd)){
 						String resultMsg = ((CommCommand)SlackCmdCache.cmdMap.get(cmd)).run(token);
 						result.put("text", resultMsg);
-						userSession.getAsyncRemote().sendText(om.writeValueAsString(result));
+					}else{
+						result.put("text", "`미지원 명령어 입니다.`");						
 					}
-					
+					userSession.getAsyncRemote().sendText(om.writeValueAsString(result));
 				}
 			}
 		}catch(Exception e){

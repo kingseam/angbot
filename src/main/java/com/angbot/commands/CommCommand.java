@@ -3,12 +3,12 @@ package com.angbot.commands;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import com.angbot.service.SlackCommService;
+import com.angbot.service.CommandApiService;
 
 public abstract class CommCommand {
-	SlackCommService service;
+	CommandApiService service;
 	
-	public CommCommand(SlackCommService service) {
+	public CommCommand(CommandApiService service) {
 		this.service = service;
 	}
 	

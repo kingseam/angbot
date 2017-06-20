@@ -3,11 +3,11 @@ package com.angbot.commands;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import com.angbot.service.SlackCommService;
+import com.angbot.service.CommandApiService;
 
 public class SlackUserCommand extends CommCommand{
 	
-	public SlackUserCommand(SlackCommService service) {
+	public SlackUserCommand(CommandApiService service) {
 		super(service);
 	}
 	@Override

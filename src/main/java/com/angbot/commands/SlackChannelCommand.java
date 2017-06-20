@@ -3,13 +3,13 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.springframework.stereotype.Service;
-import com.angbot.service.SlackCommService;
+import com.angbot.service.CommandApiService;
 
 
 @Service
 public class SlackChannelCommand extends CommCommand{
 	
-	public SlackChannelCommand(SlackCommService service) {
+	public SlackChannelCommand(CommandApiService service) {
 		super(service);
 	}
 	@Override
@@ -23,7 +23,7 @@ public class SlackChannelCommand extends CommCommand{
 			return "ex) !채널 (파라매터 없음)";
 		}
 		
-		return this.service.channelList().toString();
+		return this.service.channelList();
 	}
 	
 	public boolean validation(StringTokenizer token){		

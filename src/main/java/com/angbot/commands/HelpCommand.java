@@ -3,12 +3,12 @@ package com.angbot.commands;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import com.angbot.service.SlackCommService;
+import com.angbot.service.CommandApiService;
 import com.angbot.util.PrintToSlackUtil;
 
 public class HelpCommand extends CommCommand{
 	
-	public HelpCommand(SlackCommService service) {
+	public HelpCommand(CommandApiService service) {
 		super(service);
 	}
 	
@@ -23,7 +23,7 @@ public class HelpCommand extends CommCommand{
 		if(!this.validation(token)){
 			return "ex) !사용법 (파라매터 없음)";
 		}
-		return PrintToSlackUtil.printHelp().toString();
+		return PrintToSlackUtil.printHelp();
 	}
 	
 	public boolean validation(StringTokenizer token){		
