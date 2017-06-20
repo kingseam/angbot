@@ -1,25 +1,18 @@
 package com.angbot.commands;
 
+import java.util.Map;
+import java.util.StringTokenizer;
+
+import com.angbot.service.SlackCommService;
+
 public abstract class CommCommand {
-	public abstract String getCommand();
-
-	public String[] getAliases() {
-		return new String[] {};
+	SlackCommService service;
+	
+	public CommCommand(SlackCommService service) {
+		this.service = service;
 	}
+	
+	public abstract String command();
 
-	public abstract String excute(String msg) throws Exception;
-
-	public String getUsage(){
-		return "";
-	}
-
-	public String getDescription(){
-		return "";
-	}
-
-	public abstract String printHelp(String msg);
-
-	protected void println() {
-
-	}
+	public abstract String run(StringTokenizer token) throws Exception;
 }
