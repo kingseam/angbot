@@ -1,9 +1,7 @@
 package com.angbot.slack.dto;
 
-
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.angbot.slack.object.RealTimeMessage;
 import com.angbot.slack.object.Self;
 import com.angbot.slack.object.Team;
 

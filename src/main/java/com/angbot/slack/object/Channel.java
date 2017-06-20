@@ -1,11 +1,7 @@
 package com.angbot.slack.object;
 
-import java.util.List;
-
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Channel {
 	private String id;

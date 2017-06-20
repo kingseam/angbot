@@ -1,10 +1,8 @@
 package com.angbot.commands;
 
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import com.angbot.service.CommandApiService;
-import com.angbot.util.PrintToSlackUtil;
 
 public class NaverBlogCommand extends CommCommand{
 	

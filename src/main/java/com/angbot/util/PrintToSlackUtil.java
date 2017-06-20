@@ -128,9 +128,6 @@ public class PrintToSlackUtil{
 			if(user.getNick().equals("angbot")){
 				resultMsg.append(" => 얘는 봇 ");
 			}
-			if(user.getNick().equals("beginnerjsp")){
-				resultMsg.append(" => 여자킬러 ");
-			}
 			if(user.getNick().equals("eminency")){
 				resultMsg.append(" => 방장님 ");
 			}

@@ -1,6 +1,5 @@
 package com.angbot.commands;
 
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import com.angbot.service.CommandApiService;
@@ -14,14 +13,14 @@ public class HelpCommand extends CommCommand{
 	
 	@Override
 	public String command() {
-		return "!사용법";
+		return "!�궗�슜踰�";
 	}
 	
 	@Override
 	public String run(StringTokenizer token) throws Exception {
 		// TODO Auto-generated method stub
 		if(!this.validation(token)){
-			return "`ex) !사용법 (파라매터 없음)`";
+			return "`ex) !�궗�슜踰� (�뙆�씪留ㅽ꽣 �뾾�쓬)`";
 		}
 		return PrintToSlackUtil.printHelp();
 	}

@@ -4,6 +4,7 @@
 package com.angbot.common;
 
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -14,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-
 
 @Service
 public class BaseRestTemplate {
@@ -47,7 +46,7 @@ public class BaseRestTemplate {
 		requestFactory.setConnectionRequestTimeout(DEAULT_REQUEST_TIME_OUT);
 		requestFactory.setConnectTimeout(DEAULT_CONNECTION_TIME_OUT);
 	}
-	
+
 	public HttpHeaders getHttpHeaders() {
 		return headers;
 	}
@@ -83,7 +82,7 @@ public class BaseRestTemplate {
 
 		return responseHandler(response, callback);
 	}
-	
+
 	public <T> T responseHandler(ResponseEntity<String> response, Class<T> callback) {
 		IResponseHandler responseHandler = new JsonResponseHandler();
 		T resultObject = null;
@@ -96,7 +95,7 @@ public class BaseRestTemplate {
 				e.printStackTrace();
 			}
 		} else {
-			//TODO throw new BizMsgException(errorMessage.getMessage());
+			// TODO throw new BizMsgException(errorMessage.getMessage());
 		}
 
 		return resultObject;

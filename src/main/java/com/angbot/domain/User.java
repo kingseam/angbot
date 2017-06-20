@@ -30,7 +30,7 @@ public class User {
 		this.id = user.getId();
 		this.name = user.getReal_name();
 	}
-	
+
 	public User(User user, String active) {
 		this.nick = user.getNick();
 		this.id = user.getId();
