@@ -20,49 +20,49 @@ public class SlackMessageHandler implements MessageHandler {
 	public final String MSG_TYPE = "message";
 	public final String JOIN_TYPE = "member_joined_channel";
 	public static final Logger LOG = LoggerFactory.getLogger(SlackMessageHandler.class);
-	
+
 	ExecutorService executor = Executors.newFixedThreadPool(10);
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void handleMessage(String message, Session userSession) {
-		LOG.info("meta data={}",message);
+		LOG.info("meta data={}", message);
 		executor.submit(() -> {
-			try{
+			try {
 				ObjectMapper om = new ObjectMapper();
 				Map<String, String> result = Maps.newConcurrentMap();
 				result = om.readValue(message, Map.class);
-				if(result.get("type") != null && result.get("type").equals(JOIN_TYPE)){
-					result.put("type", MSG_TYPE);			
-					result.put("text", "!사용법");				
+				if (result.get("type") != null && result.get("type").equals(JOIN_TYPE)) {
+					result.put("type", MSG_TYPE);
+					result.put("text", "!사용법");
 					userSession.getAsyncRemote().sendText(om.writeValueAsString(result));
 				}
 
-				if(result.get("type") != null && result.get("type").equals(MSG_TYPE)){
+				if (result.get("type") != null && result.get("type").equals(MSG_TYPE)) {
 					if (result.get("text") != null && result.get("text").startsWith(CMD_TYPE)) {
 						String cmd = "";
 						StringTokenizer token = new StringTokenizer(result.get("text"), " ");
-						if(token.countTokens() > 0){
+						if (token.countTokens() > 0) {
 							cmd = token.nextToken();
 						}
-						if(SlackCmdCache.cmdMap.containsKey(cmd)){
-							String resultMsg = "`해당 "+cmd+" 명령은 이미 수행중입니다.`";
-							if(!((CommCommand)SlackCmdCache.cmdMap.get(cmd)).isState()){
-								resultMsg = ((CommCommand)SlackCmdCache.cmdMap.get(cmd)).run(token);
+						if (SlackCmdCache.cmdMap.containsKey(cmd)) {
+							String resultMsg = "`해당 " + cmd + " 명령은 이미 수행중입니다.`";
+							if (!((CommCommand) SlackCmdCache.cmdMap.get(cmd)).isState()) {
+								resultMsg = ((CommCommand) SlackCmdCache.cmdMap.get(cmd)).run(token);
 							}
 							result.put("text", resultMsg);
-						}else{
-							result.put("text", "`미지원 명령어 입니다.`");						
+						} else {
+							result.put("text", "`미지원 명령어 입니다.`");
 						}
 						userSession.getAsyncRemote().sendText(om.writeValueAsString(result));
 					}
 				}
-			}catch(Exception e){
-				
+			} catch (Exception e) {
+
 				e.printStackTrace();
 			}
 		});
-		
+
 	}
 
 }

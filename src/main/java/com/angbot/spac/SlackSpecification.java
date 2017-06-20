@@ -11,13 +11,13 @@ import javax.persistence.criteria.Root;
 
 public class SlackSpecification {
 
-	 public static Specification<User> activeUser(final String active) {
-	        return new Specification<User>() {
-	            @Override
-	            public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-	                return cb.equal(root.get("active"), active);
-	            }
-	        };
-	    }
+	public static Specification<User> activeUser(final String active) {
+		return new Specification<User>() {
+			@Override
+			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				return cb.equal(root.get("active"), active);
+			}
+		};
+	}
 
 }
