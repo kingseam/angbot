@@ -71,6 +71,7 @@ public class SlackApiController extends BaseApiController {
 				message.put("channel", "C2F31LCTZ");
 				message.put("text", "`angbot RTM serv start...`");
 
+				slackCommService.initUser();
 				ObjectMapper om = new ObjectMapper();
 				// websocket.sendMessage(om.writeValueAsString(message));
 				Thread.sleep(25000);

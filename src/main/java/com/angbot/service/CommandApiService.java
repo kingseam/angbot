@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -54,7 +55,7 @@ public class CommandApiService {
 
 	public static final Logger LOG = LoggerFactory.getLogger(CommandApiService.class);
 
-	public String userList() {
+	public void initUser() {
 		/* Set Slack User Info Param */
 		Map<String, Object> param = Maps.newConcurrentMap();
 		param.put("token", token);
@@ -69,17 +70,22 @@ public class CommandApiService {
 			for (SUser sUser : userDto.getResponseItem()) {
 				user = new User(sUser);
 				param.put("user", user.getId());
-				ApiPresenceDto result = slackRestTemplate.getApiCaller(CodeSlack.GET_Active.getUrl(),
-						ApiPresenceDto.class, param);
-				userRepository.save(new User(user, result.getPresence()));
+				ApiPresenceDto result = slackRestTemplate.getApiCaller(CodeSlack.GET_Active.getUrl(), ApiPresenceDto.class, param);
+				user = new User(user, result.getPresence());
+				SlackCmdCache.userMap.put(user.getId(), user);
 			}
 		}
 
 		/* Query Active User */
-		Specifications<User> specifications = Specifications.where(SlackSpecification.activeUser("active"));
-		List<User> list = userRepository.findAll(specifications);
+		//Specifications<User> specifications = Specifications.where(SlackSpecification.activeUser("active"));
+		//List<User> list = userRepository.findAll(specifications);
+		//List<User> list
 
-		return PrintToSlackUtil.printUser(list);
+		//return "기능 고도화중";//PrintToSlackUtil.printUser(list);
+	}
+	
+	public String userList() {		
+		return PrintToSlackUtil.printUser();
 	}
 	
 	public String issueList(StringTokenizer token) {

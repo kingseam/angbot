@@ -19,6 +19,7 @@ public class SlackMessageHandler implements MessageHandler {
 	public final String CMD_TYPE = "!";
 	public final String MSG_TYPE = "message";
 	public final String JOIN_TYPE = "member_joined_channel";
+	public final String PRESENCE_TYPE = "presence_change";
 	public static final Logger LOG = LoggerFactory.getLogger(SlackMessageHandler.class);
 
 	ExecutorService executor = Executors.newFixedThreadPool(10);
@@ -33,9 +34,18 @@ public class SlackMessageHandler implements MessageHandler {
 				Map<String, String> result = Maps.newConcurrentMap();
 				result = om.readValue(message, Map.class);
 				if (result.get("type") != null && result.get("type").equals(JOIN_TYPE)) {
+					if(SlackCmdCache.userMap.containsKey(result.get("user"))){
+						SlackCmdCache.userMap.get(result.get("user")).setActive("active");
+					}else{
+						// 최초 가입유저는 추후에 제공하기로 임시적으로 서버 재붓.필요.
+					}
 					result.put("type", MSG_TYPE);
 					result.put("text", "!사용법");
-					userSession.getAsyncRemote().sendText(om.writeValueAsString(result));
+					userSession.getAsyncRemote().sendText(om.writeValueAsString(result));					
+				}
+				
+				if (result.get("type") != null && result.get("type").equals(PRESENCE_TYPE)) {
+					SlackCmdCache.userMap.get(result.get("user")).setActive(result.get("presence"));
 				}
 
 				if (result.get("type") != null && result.get("type").equals(MSG_TYPE)) {

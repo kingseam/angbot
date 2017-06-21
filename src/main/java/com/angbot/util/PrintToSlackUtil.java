@@ -164,26 +164,28 @@ public class PrintToSlackUtil{
 		return resultMsg.toString();
 	}
 	
-	public static String printUser(List<User> list){
+	public static String printUser(){
 		StringBuffer resultMsg = new StringBuffer();
 		
 		resultMsg.append("```");
-		resultMsg.append("*접속 유저 정보("+list.size()+"명)*\n");
-		for(User user : list){
-			resultMsg.append(user.getNick().substring(0, user.getNick().length()-1)+"*");
-			if(user.getNick().equals("angbot")){
-				resultMsg.append(" => 얘는 봇 ");
+		resultMsg.append("*접속 유저 정보*\n");
+		for(java.util.Map.Entry<String, User> user : SlackCmdCache.userMap.entrySet()){
+			if(user.getValue().getActive().equals("active")){
+				resultMsg.append(user.getValue().getNick().substring(0, user.getValue().getNick().length()-1)+"*");
+				if(user.getValue().getNick().equals("angbot")){
+					resultMsg.append(" => 얘는 봇 ");
+				}
+				if(user.getValue().getNick().equals("eminency")){
+					resultMsg.append(" => 방장님 ");
+				}
+				if(user.getValue().getNick().equals("beginnerjsp")){
+					resultMsg.append(" => 여자킬러 ");
+				}
+				if(user.getValue().getNick().equals("loustler")){
+					resultMsg.append(" => 모쏠 ");
+				}
+				resultMsg.append("\n");
 			}
-			if(user.getNick().equals("eminency")){
-				resultMsg.append(" => 방장님 ");
-			}
-			if(user.getNick().equals("beginnerjsp")){
-				resultMsg.append(" => 여자킬러 ");
-			}
-			if(user.getNick().equals("loustler")){
-				resultMsg.append(" => 모쏠 ");
-			}
-			resultMsg.append("\n");
 		}
 		resultMsg.append("```");
 		

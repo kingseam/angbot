@@ -54,4 +54,8 @@ public class User {
 		return active;
 	}
 
+	public void setActive(String active) {
+		this.active = active;
+	}
+
 }
