@@ -3,6 +3,7 @@ package com.angbot.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.angbot.commands.GitHubIssueCommand;
 import com.angbot.commands.HelpCommand;
 import com.angbot.commands.NaverBlogCommand;
 import com.angbot.commands.NaverCafeCommand;
@@ -23,7 +24,8 @@ public class SlackCmdCache {
 			NaverBlogCommand.class,
 			NaverImageCommand.class,
 			NaverDocumentCommand.class,
-			NaverCafeCommand.class
+			NaverCafeCommand.class,
+			GitHubIssueCommand.class
     };
 	
 	public SlackCmdCache() {

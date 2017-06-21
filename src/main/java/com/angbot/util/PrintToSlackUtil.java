@@ -42,6 +42,44 @@ public class PrintToSlackUtil{
 		return resultMsg.toString();
 	}
 	
+	public static String printIssue(List<Map<String, Object>> items){
+		StringBuffer strOpen = new StringBuffer();
+		StringBuffer strClose = new StringBuffer();
+		boolean open = false;
+		boolean close = false;
+
+		strOpen.append("```\n ------------ 진행 이슈 --------------\n");
+		strClose.append("```\n ------------ 완료 이슈 --------------\n");
+		for(Map<String, Object> map : items){
+			if(map.get("state").toString().equals("open")){
+				strOpen.append("url : " + map.get("url")+"\n");
+				strOpen.append("이슈 : " + map.get("title")+"\n");
+				strOpen.append("설명 : " + map.get("body")+"\n");
+				strOpen.append("작성자 :" + ((Map)map.get("user")).get("login")+"\n-------------------------------------\n");
+				open = true;
+			}else{
+				strClose.append("url : " + map.get("url")+"\n");
+				strClose.append("이슈 : " + map.get("title")+"\n");
+				strClose.append("설명 : " + map.get("body")+"\n");
+				strClose.append("작성자 :" + ((Map)map.get("user")).get("login")+"\n-------------------------------------\n");
+				close = true;
+			}
+		}
+		strOpen.append("```\n");
+		strClose.append("```");
+		
+		if(!open){
+			strOpen = new StringBuffer();
+		}
+		if(!close){
+			strClose = new StringBuffer();
+		}
+		
+		strOpen.append(strClose);
+		
+		return strOpen.toString();
+	}
+	
 	public static String printMap(List<Map<String, String>> items){
 		StringBuffer resultMsg = new StringBuffer();
 		

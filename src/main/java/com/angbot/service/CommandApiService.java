@@ -1,10 +1,12 @@
 package com.angbot.service;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
 import com.angbot.commands.CommCommand;
+import com.angbot.common.GitHubRestTemplate;
 import com.angbot.common.NaverRestTemplate;
 import com.angbot.common.SlackRestTemplate;
 import com.angbot.domain.User;
@@ -24,9 +27,11 @@ import com.angbot.slack.dto.ApiUserDto;
 import com.angbot.slack.object.Channel;
 import com.angbot.slack.object.SUser;
 import com.angbot.spac.SlackSpecification;
+import com.angbot.util.CodeGitHub;
 import com.angbot.util.CodeNaver;
 import com.angbot.util.CodeSlack;
 import com.angbot.util.PrintToSlackUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 @Service
@@ -40,6 +45,9 @@ public class CommandApiService {
 
 	@Autowired
 	NaverRestTemplate naverRestTemplate;
+	
+	@Autowired
+	GitHubRestTemplate gitHubRestTemplate;
 
 	@Value("${slack.api.token}")
 	private String token;
@@ -73,6 +81,39 @@ public class CommandApiService {
 
 		return PrintToSlackUtil.printUser(list);
 	}
+	
+	public String issueList(StringTokenizer token) {
+		String msg = "";
+		try {
+			System.out.println(token.countTokens() );
+			String state = "all";
+			if(token.countTokens() > 0){
+				String query = token.nextToken();
+				if(query.equals("진행")){
+					state = "open";
+				} else if(query.equals("완료")){
+					state = "closed";
+				}
+			}
+			
+			
+			Map<String, Object> param = Maps.newConcurrentMap();
+			param.put("state", state);
+	
+			String result = gitHubRestTemplate.getApiCaller(CodeGitHub.GET_ISSUES.getUrl(), param);
+	
+			ObjectMapper om = new ObjectMapper();
+			List<Map<String,Object>> list = Lists.newArrayList();
+			list = om.readValue(result, List.class);
+	
+			msg = PrintToSlackUtil.printIssue(list);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return msg;
+	}
+
 
 	public String searchImage(StringTokenizer token) {
 		String msg = "";
