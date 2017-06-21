@@ -167,6 +167,7 @@ public class PrintToSlackUtil{
 	public static String printUser(){
 		StringBuffer resultMsg = new StringBuffer();
 		
+		int cnt = 0;
 		resultMsg.append("```");
 		resultMsg.append("*접속 유저 정보*\n");
 		for(java.util.Map.Entry<String, User> user : SlackCmdCache.userMap.entrySet()){
@@ -185,9 +186,10 @@ public class PrintToSlackUtil{
 					resultMsg.append(" => 모쏠 ");
 				}
 				resultMsg.append("\n");
+				cnt++;
 			}
 		}
-		resultMsg.append("```");
+		resultMsg.append("[ 총"+ cnt +"명의 사람이 접속중 ] ```");
 		
 		return resultMsg.toString();
 	}
