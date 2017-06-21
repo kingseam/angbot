@@ -17,6 +17,11 @@ public class HelpCommand extends CommCommand{
 	}
 	
 	@Override
+	public String help() {	
+		return "angbot 명령어 사용법";
+	}
+	
+	@Override
 	public String run(StringTokenizer token) throws Exception {
 		// TODO Auto-generated method stub
 		if(!this.validation(token)){

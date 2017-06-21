@@ -276,7 +276,7 @@ public class CommandApiService {
 			Map<String, Object> map = Maps.newConcurrentMap();
 			map = om.readValue(result, Map.class);
 
-			if (map.get("items") != null && ((List) map.get("items")).size() > 0) {
+			if (map.get("items") != null && ((List) map.get("items")).size() > 0) {				
 				msg = PrintToSlackUtil.printMap((List<Map<String, String>>) map.get("items"));
 			} else {
 				msg = "`검색 결과가 없습니다.`";

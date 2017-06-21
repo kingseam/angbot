@@ -16,10 +16,10 @@ import com.angbot.commands.SlackUserCommand;
 public class SlackCmdCache {
 	public static Map<String, Object> cmdMap = new HashMap<String, Object>();
 
-	public static final Class[] registerdCommands = { 
-			NaverMapCommand.class, 
-			SlackUserCommand.class,
+	public static final Class[] registerdCommands = {
 			SlackChannelCommand.class,
+			SlackUserCommand.class,
+			NaverMapCommand.class, 
 			HelpCommand.class,
 			NaverBlogCommand.class,
 			NaverImageCommand.class,

@@ -16,6 +16,11 @@ public class NaverBlogCommand extends CommCommand{
 	}
 	
 	@Override
+	public String help() {	
+		return "네이버 검색 중 유사도 높은 1개를 가져온다.";
+	}
+	
+	@Override
 	public String run(StringTokenizer token) throws Exception {
 		if(!this.validation(token)){
 			return "`ex) !검색 검색명`";

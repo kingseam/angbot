@@ -16,6 +16,11 @@ public class GitHubIssueCommand extends CommCommand{
 	}	
 	
 	@Override
+	public String help() {	
+		return "angbot GitHub 이슈사항을 가져온다";
+	}
+	
+	@Override
 	public String run(StringTokenizer token) throws Exception {
 		if(!this.validation(token)){
 			return "`ex) !이슈 없음|진행|종료|외 default`";

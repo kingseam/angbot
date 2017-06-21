@@ -16,6 +16,11 @@ public class NaverDocumentCommand extends CommCommand{
 	}
 	
 	@Override
+	public String help() {	
+		return "네이버 용어 사전 검색";
+	}
+	
+	@Override
 	public String run(StringTokenizer token) throws Exception {
 		if(!this.validation(token)){
 			return "`ex) !사전 단어명`";

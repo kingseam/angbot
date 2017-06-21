@@ -16,6 +16,11 @@ public class NaverCafeCommand extends CommCommand{
 	}
 	
 	@Override
+	public String help() {	
+		return "남궁성코드초보스터디 카페 최신글을 가져온다";
+	}
+	
+	@Override
 	public String run(StringTokenizer token) throws Exception {
 		if(!this.validation(token)){
 			return "`ex) !카페 (파라메터없음)`";

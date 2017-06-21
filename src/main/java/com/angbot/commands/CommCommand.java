@@ -12,6 +12,8 @@ public abstract class CommCommand {
 	}
 	
 	public abstract String command();
+	
+	public abstract String help();
 
 	public abstract String run(StringTokenizer token) throws Exception;
 

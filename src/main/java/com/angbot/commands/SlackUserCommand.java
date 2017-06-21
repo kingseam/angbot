@@ -16,6 +16,11 @@ public class SlackUserCommand extends CommCommand{
 	}	
 	
 	@Override
+	public String help() {	
+		return "해당 슬랙 현재 접속 유저 (고도화 진행중) 속도 느림.";
+	}
+	
+	@Override
 	public String run(StringTokenizer token) throws Exception {
 		if(!this.validation(token)){
 			return "`ex) !유저 (파라매터 없음)`";
