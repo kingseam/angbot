@@ -92,11 +92,11 @@ public class CommandApiService {
 		String msg = "";
 		try {
 			System.out.println(token.countTokens() );
-			String state = "all";
+			String state = "open";
 			if(token.countTokens() > 0){
 				String query = token.nextToken();
-				if(query.equals("진행")){
-					state = "open";
+				if(query.equals("전체")){
+					state = "all";
 				} else if(query.equals("완료")){
 					state = "closed";
 				}
@@ -304,26 +304,18 @@ public class CommandApiService {
 
 		ApiChannelDto chanDto = new ApiChannelDto();
 		chanDto = slackRestTemplate.getApiCaller(CodeSlack.GET_CHANEELS.getUrl(), chanDto.getClass(), param);
-
-		List<User> list = userRepository.findAll();
-
-		// id 기준 정렬 그냥 심심해서 람다 써봄 ㅋ 의미 없음.
-		list.sort((User x, User y) -> x.getId().compareTo(y.getId()));
-
+		
 		for (Channel channel : chanDto.getResponseItem()) {
-			for (User user : list) {
-				if (channel.getTopic().getCreator().equals(user.getId())) {
-					channel.setId(user.getNick());
-					isCreator = true;
-					break;
-				}
-				if (channel.getPurpose().getCreator().equals(user.getId())) {
-					if (!isCreator) {
-						channel.setId(user.getNick());
-						break;
-					}
+			if (SlackCmdCache.userMap.containsKey(channel.getTopic().getCreator())) {
+				channel.setId(SlackCmdCache.userMap.get(channel.getTopic().getCreator()).getNick());
+				isCreator = true;
+			}
+			if (SlackCmdCache.userMap.containsKey(channel.getPurpose().getCreator())) {
+				if (!isCreator) {
+					channel.setId(SlackCmdCache.userMap.get(channel.getPurpose().getCreator()).getNick());
 				}
 			}
+			
 			isCreator = false;
 			String subject = "";
 			subject = channel.getTopic().getValue() != null && !channel.getTopic().getValue().equals("")

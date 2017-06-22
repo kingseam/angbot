@@ -107,6 +107,33 @@ public class NaverRestTemplate {
 
 		return response.getBody();
 	}
+	
+	public String postApiCaller(String url, Map<String, Object> param) {
+		LOG.info("Request >> " + url);
+		LOG.info("param >> " + param);
+		if (getHttpHeaders() == null) {
+			// throw new
+			// BizMsgException(RecipeAPICode.EMPTY_HTTP_HEADER.getCode());
+		}
+
+		HttpEntity<String> entity = new HttpEntity<String>(getHttpHeaders());
+
+		long start = System.currentTimeMillis();
+
+		LOG.info("response  >>{} ", entity);
+		ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class, param);
+
+		LOG.info("response  >>{} ", response);
+
+		long end = System.currentTimeMillis();
+		LOG.info("RequestTime  >> " + (end - start) / 1000);
+
+		LOG.info("StatusCode >> " + response.getStatusCode());
+		// TODO 추후 별도 API Log Message 저장필요.
+		// LOG.info("Response >> " + response.getBody() );
+
+		return response.getBody();
+	}
 
 	public <T> T responseHandler(ResponseEntity<String> response, Class<T> callback) {
 		IResponseHandler responseHandler = new JsonResponseHandler();

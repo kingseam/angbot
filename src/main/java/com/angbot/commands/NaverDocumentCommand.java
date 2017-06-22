@@ -26,7 +26,7 @@ public class NaverDocumentCommand extends CommCommand{
 			return "`ex) !사전 단어명`";
 		}
 		
-		return this.service.searchMap(token);
+		return this.service.searchDocument(token);
 	}
 	
 	public boolean validation(StringTokenizer token){		

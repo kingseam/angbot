@@ -55,13 +55,13 @@ public class PrintToSlackUtil{
 		strClose.append("```\n ------------ 완료 이슈 --------------\n");
 		for(Map<String, Object> map : items){
 			if(map.get("state").toString().equals("open")){
-				strOpen.append("url : " + map.get("url")+"\n");
+				strOpen.append("url : " + map.get("html_url")+"\n");
 				strOpen.append("이슈 : " + map.get("title")+"\n");
 				strOpen.append("설명 : " + map.get("body")+"\n");
 				strOpen.append("작성자 :" + ((Map)map.get("user")).get("login")+"\n-------------------------------------\n");
 				open = true;
 			}else{
-				strClose.append("url : " + map.get("url")+"\n");
+				strClose.append("url : " + map.get("html_url")+"\n");
 				strClose.append("이슈 : " + map.get("title")+"\n");
 				strClose.append("설명 : " + map.get("body")+"\n");
 				strClose.append("작성자 :" + ((Map)map.get("user")).get("login")+"\n-------------------------------------\n");

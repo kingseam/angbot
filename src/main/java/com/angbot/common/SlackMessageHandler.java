@@ -37,7 +37,8 @@ public class SlackMessageHandler implements MessageHandler {
 					if(SlackCmdCache.userMap.containsKey(result.get("user"))){
 						SlackCmdCache.userMap.get(result.get("user")).setActive("active");
 					}else{
-						// 최초 가입유저는 추후에 제공하기로 임시적으로 서버 재붓.필요.
+						//임시땜빵. 나중에 누가.. 제대로 추가좀.
+						((CommCommand) SlackCmdCache.cmdMap.get("!유저")).run(new StringTokenizer(""));
 					}
 					result.put("type", MSG_TYPE);
 					result.put("text", "!사용법");
@@ -45,7 +46,12 @@ public class SlackMessageHandler implements MessageHandler {
 				}
 				
 				if (result.get("type") != null && result.get("type").equals(PRESENCE_TYPE)) {
-					SlackCmdCache.userMap.get(result.get("user")).setActive(result.get("presence"));
+					if(SlackCmdCache.userMap.containsKey(result.get("user"))){
+						SlackCmdCache.userMap.get(result.get("user")).setActive(result.get("presence"));
+					}else{
+						//임시땜빵. 나중에 누가.. 제대로 추가좀.
+						((CommCommand) SlackCmdCache.cmdMap.get("!유저")).run(new StringTokenizer(""));
+					}
 				}
 
 				if (result.get("type") != null && result.get("type").equals(MSG_TYPE)) {

@@ -103,5 +103,14 @@ public class SlackApiController extends BaseApiController {
 		websocket = null;
 		return resDto;
 	}
+	
+	@RequestMapping(value = "/user/init", method = RequestMethod.GET)
+	public @ResponseBody ApiResDto userInit() throws IOException {
+		ApiResDto resDto = new ApiResDto("rtmConnect");
+		
+		slackCommService.initUser();
+		
+		return resDto;
+	}
 
 }
