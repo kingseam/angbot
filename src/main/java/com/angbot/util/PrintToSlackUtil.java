@@ -32,6 +32,23 @@ public class PrintToSlackUtil{
 		return resultMsg.toString();
 	}
 	
+	public static String printNotice(){		
+		StringBuffer resultMsg = new StringBuffer();
+		
+		resultMsg.append("```");
+		resultMsg.append("*회칙인 듯 회칙 아닌 회칙 같은 너*                                                                                               ");
+		resultMsg.append("1. 회원 정리는 방장 맘대로, 방장이 하고 싶을 때                                                                                  ");
+		resultMsg.append("2. #general 과 #announcements 는 채널 탈퇴 금지입니다                                                                            ");
+		resultMsg.append("3. 회원 가입 권한은 저에게만 있습니다 - 카페 가입자만 가입 가능                                                                  ");
+		resultMsg.append("4. 프로필에 코드 초보 스터디 카페의 대화명을 알 수 있도록 대화명이든 이름에든 표시 부탁드립니다 - 아니면 1의 대상이 될 수 있음.  ");
+		resultMsg.append("5. 슬랙 이메일도 카페 가입 이메일로 유지 부탁드립니다.                                                                           ");
+		resultMsg.append("6. 채널 개설은 자유 - 하지만 활동이 뜸할 경우는 1과 동일한 규칙 적용                                                             ");
+		resultMsg.append("7. 그 외에는 자유 - 하지만 민원 여부(?) 및 상황에 따라 방장 맘대로 제한 가능                                                     ");		
+		resultMsg.append("```");
+		
+		return resultMsg.toString();
+	}
+	
 
 	public static String printHelp(){		
 		StringBuffer resultMsg = new StringBuffer();
@@ -184,6 +201,9 @@ public class PrintToSlackUtil{
 				}
 				if(user.getValue().getNick().equals("loustler")){
 					resultMsg.append(" => 모쏠 ");
+				}
+				if(user.getValue().getNick().equals("reactor")){
+					resultMsg.append(" => 개발변태 ");
 				}
 				resultMsg.append("\n");
 				cnt++;
