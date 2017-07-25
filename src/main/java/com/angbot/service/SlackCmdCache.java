@@ -12,6 +12,7 @@ import com.angbot.commands.NaverImageCommand;
 import com.angbot.commands.NaverMapCommand;
 import com.angbot.commands.SlackChannelCommand;
 import com.angbot.commands.SlackUserCommand;
+import com.angbot.commands.NoticeCommand;
 import com.angbot.domain.User;
 
 public class SlackCmdCache {
@@ -19,6 +20,7 @@ public class SlackCmdCache {
 	public static Map<String, User> userMap = new LinkedHashMap<String, User>();
 
 	public static final Class[] registerdCommands = {
+			NoticeCommand.class,
 			SlackChannelCommand.class,
 			SlackUserCommand.class,
 			NaverMapCommand.class, 

@@ -43,7 +43,7 @@ public class SlackMessageHandler implements MessageHandler {
 					result.put("type", MSG_TYPE);
 					result.put("text", "!사용법");
 					userSession.getAsyncRemote().sendText(om.writeValueAsString(result));
-					Thread.sleep(1000);
+					Thread.sleep(5000);
 					result.put("type", MSG_TYPE);
 					result.put("text", "!공지");
 					userSession.getAsyncRemote().sendText(om.writeValueAsString(result));
