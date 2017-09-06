@@ -1,11 +1,16 @@
 package com.angbot.service;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -248,7 +253,34 @@ public class CommandApiService {
 
 		return msg;
 	}
-
+	
+	/**
+	 * 날씨 구하기
+	 *
+	 * @param
+	 * @return
+	 * @exception
+	 * @see
+	 */
+	public String getWeathers() {
+		Document doc = null;
+		try {
+			doc = Jsoup.connect("http://www.kma.go.kr/index.jsp").get();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		if(doc != null) {
+			TreeMap<String, String> map = new TreeMap<String, String>(doc.select("div.ML22 dl:gt(1)").stream()
+					.collect(Collectors.toMap(
+							e -> e.select("dt").text(),
+							e -> e.select("dd").text() + "℃",
+							(dt, dd) -> dt + ":" + dd)));
+			return PrintToSlackUtil.printWeather(map);
+		}
+		return null;
+	}
+	
+	
 	public String channelList() {
 		/* Set Slack User Info Param */
 		boolean isCreator = false;
