@@ -253,14 +253,13 @@ public class CommandApiService {
 
 		return msg;
 	}
-	
+
 	/**
 	 * 날씨 구하기
 	 *
 	 * @param
 	 * @return
-	 * @exception
-	 * @see
+	 * @exception @see
 	 */
 	public String getWeathers() {
 		Document doc = null;
@@ -269,18 +268,21 @@ public class CommandApiService {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		if(doc != null) {
-			TreeMap<String, String> map = new TreeMap<String, String>(doc.select("div.ML22 dl:gt(1)").stream()
-					.collect(Collectors.toMap(
-							e -> e.select("dt").text(),
-							e -> e.select("dd").text() + "℃",
-							(dt, dd) -> dt + ":" + dd)));
+		if (doc != null) {
+			TreeMap<String, String> map = new TreeMap<String, String>(
+					doc.select("div.ML22 dl:gt(1)").stream().collect(
+								Collectors.toMap(
+												e -> e.select("dt").text(),
+												e -> "<img src =\"http://www.kma.go.kr/" + e.select("dd a img").attr("src") + "\" /> " + e.select("dd p").text() + "℃",
+												(dt, dd) -> dt + ":" + dd
+											)
+								)
+					);
 			return PrintToSlackUtil.printWeather(map);
 		}
 		return null;
 	}
-	
-	
+
 	public String channelList() {
 		/* Set Slack User Info Param */
 		boolean isCreator = false;
