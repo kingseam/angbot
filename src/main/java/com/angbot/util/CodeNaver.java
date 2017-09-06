@@ -57,6 +57,3 @@ public enum CodeNaver {
 	
 	
 }
-
-
-

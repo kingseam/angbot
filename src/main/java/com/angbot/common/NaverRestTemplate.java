@@ -6,10 +6,8 @@ package com.angbot.common;
 import java.util.Map;
 
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.ssl.TrustStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,10 +21,6 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.angbot.slack.dto.ApiBaseDto;
-
-
-
 @Service
 public class NaverRestTemplate {
 
@@ -35,19 +29,19 @@ public class NaverRestTemplate {
 	private static final String DEFAULT_CONTENT_TYPE_VALUE = "application/json;charset=utf-8";
 	private static final String NAVER_API_ID = "X-Naver-Client-Id";
 	private static final String NAVER_API_SECRET = "X-Naver-Client-Secret";
-	
+
 	private static final int DEAULT_CONNECTION_TIME_OUT = 12000;
 	private static final int DEAULT_REQUEST_TIME_OUT = 10000;
 
 	private RestTemplate restTemplate;
 	private HttpComponentsClientHttpRequestFactory requestFactory;
 	private HttpHeaders headers;
-	
+
 	@Value("${naver.api.id}")
 	private String api_id;
-	
+
 	@Value("${naver.api.secret}")
-	private String api_secret;	
+	private String api_secret;
 
 	public NaverRestTemplate() {
 		try {
@@ -62,9 +56,10 @@ public class NaverRestTemplate {
 	}
 
 	public void setClientFactory() {
-		CloseableHttpClient httpClient = HttpClients.custom().setSSLHostnameVerifier(new NoopHostnameVerifier()).build();
-	    requestFactory = new HttpComponentsClientHttpRequestFactory();
-	    requestFactory.setHttpClient(httpClient);
+		CloseableHttpClient httpClient = HttpClients.custom().setSSLHostnameVerifier(new NoopHostnameVerifier())
+				.build();
+		requestFactory = new HttpComponentsClientHttpRequestFactory();
+		requestFactory.setHttpClient(httpClient);
 
 		requestFactory.setConnectionRequestTimeout(DEAULT_REQUEST_TIME_OUT);
 		requestFactory.setConnectTimeout(DEAULT_CONNECTION_TIME_OUT);
@@ -112,7 +107,7 @@ public class NaverRestTemplate {
 
 		return response.getBody();
 	}
-	
+
 	public <T> T responseHandler(ResponseEntity<String> response, Class<T> callback) {
 		IResponseHandler responseHandler = new JsonResponseHandler();
 		T resultObject = null;
@@ -125,7 +120,7 @@ public class NaverRestTemplate {
 				e.printStackTrace();
 			}
 		} else {
-			//TODO throw new BizMsgException(errorMessage.getMessage());
+			// TODO throw new BizMsgException(errorMessage.getMessage());
 		}
 
 		return resultObject;

@@ -1,10 +1,11 @@
 package com.angbot.util;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.angbot.domain.User;
-import com.angbot.slack.dto.ApiBaseDto;
 import com.angbot.slack.dto.ApiChannelDto;
 import com.angbot.slack.object.Channel;
 
@@ -128,9 +129,6 @@ public class PrintToSlackUtil{
 			if(user.getNick().equals("angbot")){
 				resultMsg.append(" => 얘는 봇 ");
 			}
-			if(user.getNick().equals("beginnerjsp")){
-				resultMsg.append(" => 여자킬러 ");
-			}
 			if(user.getNick().equals("eminency")){
 				resultMsg.append(" => 방장님 ");
 			}
@@ -142,5 +140,33 @@ public class PrintToSlackUtil{
 		resultMsg.append("```");
 		
 		return resultMsg.toString();
+	}
+	
+	
+	/**
+	 * 날씨 정보 출력
+	 *
+	 * @param
+	 * @return
+	 * @exception
+	 * @see
+	 */
+	public static String printWeather(TreeMap<String, String> weathersMap) {
+		
+		StringBuilder weathers = new StringBuilder();
+		
+		Iterator<String> it = weathersMap.keySet().iterator();
+		
+		weathers.append("```\n");
+			while(it.hasNext()) {
+				String key = it.next();
+				weathers.append(key);
+				weathers.append(" = ");
+				weathers.append(weathersMap.get(key));
+				weathers.append("\n");
+			}
+		weathers.append("```");
+		
+		return weathers.toString();
 	}
 }

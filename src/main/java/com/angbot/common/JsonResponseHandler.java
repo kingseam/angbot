@@ -15,8 +15,8 @@ public class JsonResponseHandler implements IResponseHandler {
 	public <T> T responseToObject(ResponseEntity<String> response, Class<T> callback) throws Exception {
 
 		ObjectMapper om = new ObjectMapper();
-		
-		om.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);		
+
+		om.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		T resultObject = om.readValue(response.getBody(), callback);
 
 		return resultObject;
