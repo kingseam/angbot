@@ -26,7 +26,6 @@ import com.angbot.util.CodeSlack;
 import com.google.common.collect.Maps;
 
 @RestController
-@RequestMapping("/api/slack")
 public class SlackApiController extends BaseApiController {
 
 	@Autowired
@@ -51,7 +50,7 @@ public class SlackApiController extends BaseApiController {
 
 	public static final Logger LOG = LoggerFactory.getLogger(SlackApiController.class);
 
-	@RequestMapping(value = "/rtm/connect", method = RequestMethod.GET)
+	@RequestMapping(value = {"/", "/rtm/connect"}, method = {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody ApiResDto rtmConnect() throws Exception {
 		ApiResDto resDto = new ApiResDto("rtmConnect");
 		ApiRealTimeMessageDto rtmDto = new ApiRealTimeMessageDto();
@@ -103,13 +102,13 @@ public class SlackApiController extends BaseApiController {
 		websocket = null;
 		return resDto;
 	}
-	
+
 	@RequestMapping(value = "/user/init", method = RequestMethod.GET)
 	public @ResponseBody ApiResDto userInit() throws IOException {
 		ApiResDto resDto = new ApiResDto("rtmConnect");
-		
+
 		slackCommService.initUser();
-		
+
 		return resDto;
 	}
 

@@ -30,6 +30,7 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-websocket', version: '4.3.9.RELEASE'
     compile group: 'commons-configuration', name: 'commons-configuration', version: '1.7'
     compile('org.apache.httpcomponents:httpclient:4.5.1')
+    compile('org.seleniumhq.selenium:selenium-java:3.4.0')  
     runtime('org.hsqldb:hsqldb')
 	runtime('mysql:mysql-connector-java')
     testCompile("junit:junit")

@@ -33,19 +33,16 @@ public class SlackMessageHandler implements MessageHandler {
 				ObjectMapper om = new ObjectMapper();
 				Map<String, String> result = Maps.newConcurrentMap();
 				result = om.readValue(message, Map.class);
-				if (result.get("type") != null && result.get("type").equals(JOIN_TYPE)) {
+				// 제너럴일경우만. 사용법
+				if (result.get("type") != null && result.get("type").equals(JOIN_TYPE) && result.get("channel").equals("C2F31LCTZ")) {
 					if(SlackCmdCache.userMap.containsKey(result.get("user"))){
 						SlackCmdCache.userMap.get(result.get("user")).setActive("active");
 					}else{
 						//임시땜빵. 나중에 누가.. 제대로 추가좀.
-						((CommCommand) SlackCmdCache.cmdMap.get("!유저")).run(new StringTokenizer(""));
+						((CommCommand) SlackCmdCache.cmdMap.get("!유저 동기화")).run(new StringTokenizer(""));
 					}
 					result.put("type", MSG_TYPE);
 					result.put("text", "!사용법");
-					userSession.getAsyncRemote().sendText(om.writeValueAsString(result));
-					Thread.sleep(5000);
-					result.put("type", MSG_TYPE);
-					result.put("text", "!공지");
 					userSession.getAsyncRemote().sendText(om.writeValueAsString(result));
 				}
 				
@@ -54,7 +51,7 @@ public class SlackMessageHandler implements MessageHandler {
 						SlackCmdCache.userMap.get(result.get("user")).setActive(result.get("presence"));
 					}else{
 						//임시땜빵. 나중에 누가.. 제대로 추가좀.
-						((CommCommand) SlackCmdCache.cmdMap.get("!유저")).run(new StringTokenizer(""));
+						((CommCommand) SlackCmdCache.cmdMap.get("!유저 동기화")).run(new StringTokenizer(""));
 					}
 				}
 

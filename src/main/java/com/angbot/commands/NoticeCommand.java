@@ -18,7 +18,7 @@ public class NoticeCommand extends CommCommand{
 	
 	@Override
 	public String help() {	
-		return "angbot 명령어 사용법";
+		return "slack 공지사항";
 	}
 	
 	@Override

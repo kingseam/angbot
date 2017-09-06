@@ -22,6 +22,11 @@ public class SlackUserCommand extends CommCommand{
 	
 	@Override
 	public String run(StringTokenizer token) throws Exception {
+		if(token.equals("동기화")){
+			this.service.initUser();
+			return "";
+		}
+		
 		if(!this.validation(token)){
 			return "`ex) !유저 (파라매터 없음)`";
 		}		
