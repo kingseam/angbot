@@ -13,7 +13,7 @@ public class HelpCommand extends CommCommand{
 	
 	@Override
 	public String command() {
-		return "!사용법";
+		return "!�궗�슜踰�";
 	}
 	
 	@Override

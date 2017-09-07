@@ -1,11 +1,16 @@
 package com.angbot.service;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,7 +115,6 @@ public class CommandApiService {
 
 		return msg;
 	}
-
 
 	public String searchImage(StringTokenizer token) {
 		String msg = "";
@@ -285,6 +289,52 @@ public class CommandApiService {
 		}
 
 		return msg;
+	}
+
+	/**
+	 * 날씨 구하기
+	 *
+	 * @param
+	 * @return
+	 * @exception @see
+	 */
+	public String getWeathers(StringTokenizer token) {
+		Document doc = null;
+
+		String query = "";
+
+		while (token.hasMoreTokens()) {
+			query += token.nextToken();
+			if (token.countTokens() > 0)
+				query += " ";
+		}
+		
+		query += "%20날씨";
+		
+		try {
+			doc = Jsoup.connect(
+					"http://m.search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + query + "&where=m")
+					.get();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		if (doc != null) {
+
+			Elements weatherElements = doc.select("div.status_bx.type1");
+			String weatherText = weatherElements.select("span.u_hc:eq(0)").text();
+			String weatherTemperature = weatherElements.select("div.wt_text strong em").text();
+
+			// timeLine info
+			List<String> timeLineInfos = new ArrayList<>();
+			doc.select("div.grap_box ul>li").forEach(e -> {
+				timeLineInfos.add(e.select("strong").text() + "시 " + e.select("span.wt_status").text() + " "
+						+ e.select("em").text() + "℃");
+			});
+
+			return PrintToSlackUtil.printWeather(weatherText + " " + weatherTemperature + "℃",
+					timeLineInfos.toString());
+		}
+		return null;
 	}
 
 	public String channelList() {

@@ -14,6 +14,7 @@ import com.angbot.commands.NaverMapCommand;
 import com.angbot.commands.NoticeCommand;
 import com.angbot.commands.SlackChannelCommand;
 import com.angbot.commands.SlackUserCommand;
+import com.angbot.commands.WeatherCommand;
 import com.angbot.domain.User;
 
 public class SlackCmdCache {
@@ -30,6 +31,7 @@ public class SlackCmdCache {
 			NaverImageCommand.class,
 			NaverDocumentCommand.class,
 			NaverCafeCommand.class,
+			WeatherCommand.class,
 			GitHubIssueCommand.class,
 			NLPCommand.class
     };

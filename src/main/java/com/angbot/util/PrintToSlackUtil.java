@@ -231,4 +231,26 @@ public class PrintToSlackUtil{
 
 		return resultMsg.toString();
 	}
+	
+	
+	/**
+	 * 날씨 정보 출력
+	 *
+	 * @param
+	 * @return
+	 * @exception
+	 * @see
+	 */
+	public static String printWeather(String weatherInfo , String weatherTimeLine) {
+		
+		StringBuilder weathers = new StringBuilder();
+		
+		weathers.append("```\n");
+		weathers.append(weatherInfo + "\n");
+		weathers.append("시간별 날씨\n");
+		weathers.append(weatherTimeLine + "\n");
+		weathers.append("```");
+		
+		return weathers.toString();
+	}
 }
