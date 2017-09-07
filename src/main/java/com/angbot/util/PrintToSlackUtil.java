@@ -6,17 +6,15 @@ import java.util.Map;
 import com.angbot.commands.CommCommand;
 import com.angbot.domain.User;
 import com.angbot.service.SlackCmdCache;
-import com.angbot.slack.dto.ApiBaseDto;
 import com.angbot.slack.dto.ApiChannelDto;
 import com.angbot.slack.object.Channel;
-import com.google.common.collect.Multiset.Entry;
 
 public class PrintToSlackUtil{
-	
-	public static String printChannel(ApiChannelDto dtoList){		
+
+	public static String printChannel(ApiChannelDto dtoList){
 		StringBuffer resultMsg = new StringBuffer();
 		int rank = 1;
-		
+
 		resultMsg.append("```");
 		for(Channel dto : dtoList.getResponseItem()){
 			resultMsg.append(String.valueOf(rank));
@@ -28,13 +26,13 @@ public class PrintToSlackUtil{
 			rank++;
 		}
 		resultMsg.append("```");
-		
+
 		return resultMsg.toString();
 	}
-	
-	public static String printNotice(){		
+
+	public static String printNotice(){
 		StringBuffer resultMsg = new StringBuffer();
-		
+
 		resultMsg.append("```");
 		resultMsg.append("*회칙인 듯 회칙 아닌 회칙 같은 너* \n");
 		resultMsg.append("1. 회원 정리는 방장 맘대로, 방장이 하고 싶을 때\n");
@@ -45,22 +43,22 @@ public class PrintToSlackUtil{
 		resultMsg.append("6. 채널 개설은 자유 - 하지만 활동이 뜸할 경우는 1과 동일한 규칙 적용 \n");
 		resultMsg.append("7. 가입 이메일이 카페에 안 보이면 언제든지 탈퇴당할 수 있음…ㅎㅎ \n");
 		resultMsg.append("8. 그 외에는 자유 - 하지만 민원 여부(?) 및 상황에 따라 방장 맘대로 제한 가능 \n");
-		
+
 		resultMsg.append("```");
-		
+
 		return resultMsg.toString();
 	}
-	
 
-	public static String printHelp(){		
+
+	public static String printHelp(){
 		StringBuffer resultMsg = new StringBuffer();
-		
+
 		resultMsg.append("```");
 		for(java.util.Map.Entry<String, Object> entry : SlackCmdCache.cmdMap.entrySet()){
 			resultMsg.append("\n "+entry.getKey() + " : " +  ((CommCommand)entry.getValue()).help());
 		}
-		
-		
+
+
 		resultMsg.append("\n\n*회칙인 듯 회칙 아닌 회칙 같은 너* \n");
 		resultMsg.append("1. 회원 정리는 방장 맘대로, 방장이 하고 싶을 때\n");
 		resultMsg.append("2. #general 과 #announcements 는 채널 탈퇴 금지입니다\n");
@@ -70,12 +68,12 @@ public class PrintToSlackUtil{
 		resultMsg.append("6. 채널 개설은 자유 - 하지만 활동이 뜸할 경우는 1과 동일한 규칙 적용 \n");
 		resultMsg.append("7. 가입 이메일이 카페에 안 보이면 언제든지 탈퇴당할 수 있음…ㅎㅎ \n");
 		resultMsg.append("8. 그 외에는 자유 - 하지만 민원 여부(?) 및 상황에 따라 방장 맘대로 제한 가능 \n");
-		
+
 		resultMsg.append("```");
-		
+
 		return resultMsg.toString();
 	}
-	
+
 	public static String printIssue(List<Map<String, Object>> items){
 		StringBuffer strOpen = new StringBuffer();
 		StringBuffer strClose = new StringBuffer();
@@ -101,22 +99,22 @@ public class PrintToSlackUtil{
 		}
 		strOpen.append("```\n");
 		strClose.append("```");
-		
+
 		if(!open){
 			strOpen = new StringBuffer();
 		}
 		if(!close){
 			strClose = new StringBuffer();
 		}
-		
+
 		strOpen.append(strClose);
-		
+
 		return strOpen.toString();
 	}
-	
+
 	public static String printMap(List<Map<String, String>> items){
 		StringBuffer resultMsg = new StringBuffer();
-		
+
 		for(Map<String, String> map : items){
 			resultMsg.append("[");
 			resultMsg.append("*"+map.get("title").replaceAll("\\<.*?>","")+"*");
@@ -130,13 +128,13 @@ public class PrintToSlackUtil{
 			resultMsg.append("]");
 			*/
 		}
-		
+
 		return resultMsg.toString();
 	}
-	
+
 	public static String printDocument(List<Map<String, String>> items){
 		StringBuffer resultMsg = new StringBuffer();
-		
+
 		for(Map<String, String> map : items){
 			resultMsg.append("*[");
 			resultMsg.append(map.get("description").replaceAll("\\<.*?>",""));
@@ -145,13 +143,13 @@ public class PrintToSlackUtil{
 			resultMsg.append(map.get("link").replaceAll("\\<.*?>",""));
 			resultMsg.append("]");
 		}
-		
+
 		return resultMsg.toString();
 	}
-	
+
 	public static String printCafe(List<Map<String, String>> items){
 		StringBuffer resultMsg = new StringBuffer();
-		
+
 		for(Map<String, String> map : items){
 			resultMsg.append("*[");
 			resultMsg.append(map.get("title").replaceAll("\\<.*?>",""));
@@ -160,14 +158,14 @@ public class PrintToSlackUtil{
 			resultMsg.append(map.get("link").replaceAll("\\<.*?>",""));
 			resultMsg.append("](코드초보스터디카페)\n");
 		}
-		
+
 		return resultMsg.toString();
 	}
-	
-	
+
+
 	public static String printBlog(List<Map<String, String>> items){
 		StringBuffer resultMsg = new StringBuffer();
-		
+
 		for(Map<String, String> map : items){
 			resultMsg.append("*[");
 			resultMsg.append(map.get("title").replaceAll("\\<.*?>",""));
@@ -176,13 +174,13 @@ public class PrintToSlackUtil{
 			resultMsg.append(map.get("link").replaceAll("\\<.*?>",""));
 			resultMsg.append("](블로그)\n");
 		}
-		
+
 		return resultMsg.toString();
 	}
-	
+
 	public static String printImage(List<Map<String, String>> items){
 		StringBuffer resultMsg = new StringBuffer();
-		
+
 		for(Map<String, String> map : items){
 			resultMsg.append("*[");
 			resultMsg.append(map.get("title").replaceAll("\\<.*?>",""));
@@ -191,13 +189,13 @@ public class PrintToSlackUtil{
 			resultMsg.append(map.get("link").replaceAll("\\<.*?>",""));
 			resultMsg.append("]");
 		}
-		
+
 		return resultMsg.toString();
 	}
-	
+
 	public static String printUser(){
 		StringBuffer resultMsg = new StringBuffer();
-		
+
 		int cnt = 0;
 		resultMsg.append("```");
 		resultMsg.append("*접속 유저 정보*\n");
@@ -230,7 +228,7 @@ public class PrintToSlackUtil{
 			}
 		}
 		resultMsg.append("[ 총"+ cnt +"명의 사람이 접속중 ] ```");
-		
+
 		return resultMsg.toString();
 	}
 }

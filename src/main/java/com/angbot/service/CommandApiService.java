@@ -1,19 +1,15 @@
 package com.angbot.service;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
-import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
 import com.angbot.commands.CommCommand;
@@ -21,13 +17,11 @@ import com.angbot.common.GitHubRestTemplate;
 import com.angbot.common.NaverRestTemplate;
 import com.angbot.common.SlackRestTemplate;
 import com.angbot.domain.User;
-import com.angbot.repository.UserRepository;
 import com.angbot.slack.dto.ApiChannelDto;
 import com.angbot.slack.dto.ApiPresenceDto;
 import com.angbot.slack.dto.ApiUserDto;
 import com.angbot.slack.object.Channel;
 import com.angbot.slack.object.SUser;
-import com.angbot.spac.SlackSpecification;
 import com.angbot.util.CodeGitHub;
 import com.angbot.util.CodeNaver;
 import com.angbot.util.CodeSlack;
@@ -39,14 +33,11 @@ import com.google.common.collect.Maps;
 public class CommandApiService {
 
 	@Autowired
-	UserRepository userRepository;
-
-	@Autowired
 	SlackRestTemplate slackRestTemplate;
 
 	@Autowired
 	NaverRestTemplate naverRestTemplate;
-	
+
 	@Autowired
 	GitHubRestTemplate gitHubRestTemplate;
 
@@ -83,11 +74,11 @@ public class CommandApiService {
 
 		//return "기능 고도화중";//PrintToSlackUtil.printUser(list);
 	}
-	
-	public String userList() {		
+
+	public String userList() {
 		return PrintToSlackUtil.printUser();
 	}
-	
+
 	public String issueList(StringTokenizer token) {
 		String msg = "";
 		try {
@@ -101,22 +92,22 @@ public class CommandApiService {
 					state = "closed";
 				}
 			}
-			
-			
+
+
 			Map<String, Object> param = Maps.newConcurrentMap();
 			param.put("state", state);
-	
+
 			String result = gitHubRestTemplate.getApiCaller(CodeGitHub.GET_ISSUES.getUrl(), param);
-	
+
 			ObjectMapper om = new ObjectMapper();
 			List<Map<String,Object>> list = Lists.newArrayList();
 			list = om.readValue(result, List.class);
-	
+
 			msg = PrintToSlackUtil.printIssue(list);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
+
 		return msg;
 	}
 
@@ -282,7 +273,7 @@ public class CommandApiService {
 			Map<String, Object> map = Maps.newConcurrentMap();
 			map = om.readValue(result, Map.class);
 
-			if (map.get("items") != null && ((List) map.get("items")).size() > 0) {				
+			if (map.get("items") != null && ((List) map.get("items")).size() > 0) {
 				msg = PrintToSlackUtil.printMap((List<Map<String, String>>) map.get("items"));
 			} else {
 				msg = "`검색 결과가 없습니다.`";
@@ -304,7 +295,7 @@ public class CommandApiService {
 
 		ApiChannelDto chanDto = new ApiChannelDto();
 		chanDto = slackRestTemplate.getApiCaller(CodeSlack.GET_CHANEELS.getUrl(), chanDto.getClass(), param);
-		
+
 		for (Channel channel : chanDto.getResponseItem()) {
 			if (SlackCmdCache.userMap.containsKey(channel.getTopic().getCreator())) {
 				channel.setId(SlackCmdCache.userMap.get(channel.getTopic().getCreator()).getNick());
@@ -315,7 +306,7 @@ public class CommandApiService {
 					channel.setId(SlackCmdCache.userMap.get(channel.getPurpose().getCreator()).getNick());
 				}
 			}
-			
+
 			isCreator = false;
 			String subject = "";
 			subject = channel.getTopic().getValue() != null && !channel.getTopic().getValue().equals("")

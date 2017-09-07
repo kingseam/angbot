@@ -18,7 +18,6 @@ import com.angbot.common.JsonResponseHandler;
 import com.angbot.common.SlackMessageHandler;
 import com.angbot.common.SlackRestTemplate;
 import com.angbot.common.WebsocketClientEndpoint;
-import com.angbot.repository.UserRepository;
 import com.angbot.service.CommandApiService;
 import com.angbot.slack.dto.ApiRealTimeMessageDto;
 import com.angbot.util.ApiResDto;
@@ -28,8 +27,6 @@ import com.google.common.collect.Maps;
 @RestController
 public class SlackApiController extends BaseApiController {
 
-	@Autowired
-	UserRepository userRepository;
 
 	@Autowired
 	BaseRestTemplate bestRestTemplate;
