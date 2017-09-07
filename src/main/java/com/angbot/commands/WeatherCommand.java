@@ -25,7 +25,6 @@ public class WeatherCommand extends CommCommand {
 		if(!this.validation(token)){
 			return "`ex) !오늘날씨 낙성대`";
 		}
-		//TODO -_- 나중에 뭐 지역 이름만 가지고 날씨 구하던지 그렇게..
 		return this.service.getWeathers(token).toString();
 	}
 
@@ -39,6 +38,11 @@ public class WeatherCommand extends CommCommand {
 	@Override
 	public boolean isState() {
 		return status;
+	}
+
+	@Override
+	public String help() {
+		return "오늘날씨";
 	}
 
 }
