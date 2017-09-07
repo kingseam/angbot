@@ -151,20 +151,14 @@ public class PrintToSlackUtil{
 	 * @exception
 	 * @see
 	 */
-	public static String printWeather(TreeMap<String, String> weathersMap) {
+	public static String printWeather(String weatherInfo , String weatherTimeLine) {
 		
 		StringBuilder weathers = new StringBuilder();
 		
-		Iterator<String> it = weathersMap.keySet().iterator();
-		
 		weathers.append("```\n");
-			while(it.hasNext()) {
-				String key = it.next();
-				weathers.append(key);
-				weathers.append(" = ");
-				weathers.append(weathersMap.get(key));
-				weathers.append("\n");
-			}
+		weathers.append(weatherInfo + "\n");
+		weathers.append("시간별 날씨\n");
+		weathers.append(weatherTimeLine + "\n");
 		weathers.append("```");
 		
 		return weathers.toString();

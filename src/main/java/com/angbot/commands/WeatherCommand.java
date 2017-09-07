@@ -23,10 +23,10 @@ public class WeatherCommand extends CommCommand {
 	@Override
 	public String run(StringTokenizer token) throws Exception {
 		if(!this.validation(token)){
-			return "`ex) !오늘날씨`";
+			return "`ex) !오늘날씨 낙성대`";
 		}
 		//TODO -_- 나중에 뭐 지역 이름만 가지고 날씨 구하던지 그렇게..
-		return this.service.getWeathers().toString();
+		return this.service.getWeathers(token).toString();
 	}
 
 	private boolean validation(StringTokenizer token) {
