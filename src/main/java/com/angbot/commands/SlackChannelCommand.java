@@ -19,6 +19,11 @@ public class SlackChannelCommand extends CommCommand{
 	}
 	
 	@Override
+	public String help() {	
+		return "해당 슬랙 채널 목록 ( 최초 가입자는 확인 필수 )";
+	}
+	
+	@Override
 	public String run(StringTokenizer token) throws Exception {
 		if(!this.validation(token)){
 			return "`ex) !채널 (파라매터 없음)`";

@@ -4,40 +4,43 @@ import java.util.StringTokenizer;
 
 import com.angbot.service.CommandApiService;
 
-public class NaverCafeCommand extends CommCommand{
+public class GitHubIssueCommand extends CommCommand{
+	boolean state = false;
 	
-	public NaverCafeCommand(CommandApiService service) {
+	public GitHubIssueCommand(CommandApiService service) {
 		super(service);
 	}
-	
 	@Override
 	public String command() {
-		return "!카페";
-	}
+		return "!이슈";
+	}	
 	
 	@Override
 	public String help() {	
-		return "남궁성코드초보스터디 카페 최신글을 가져온다";
+		return "angbot GitHub 이슈사항을 가져온다";
 	}
 	
 	@Override
 	public String run(StringTokenizer token) throws Exception {
 		if(!this.validation(token)){
-			return "`ex) !카페 (파라메터없음)`";
-		}
-		
-		return this.service.searchCafe(token);
+			return "`ex) !이슈 없음|진행|종료|외 default`";
+		}		
+		this.state = true;
+		String msg = this.service.issueList(token);
+		this.state = false;
+		return msg;
 	}
 	
 	public boolean validation(StringTokenizer token){		
-		if(token.countTokens() > 0){
+		if(token.countTokens() > 1){
 			return false;
 		}
 		return true;
 	}
+	
 	@Override
 	public boolean isState() {
-		// TODO Auto-generated method stub
-		return false;
+		return state;
 	}
+	
 }

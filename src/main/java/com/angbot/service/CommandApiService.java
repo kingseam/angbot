@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;
@@ -17,30 +15,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
 import com.angbot.commands.CommCommand;
+import com.angbot.common.GitHubRestTemplate;
 import com.angbot.common.NaverRestTemplate;
 import com.angbot.common.SlackRestTemplate;
 import com.angbot.domain.User;
-import com.angbot.repository.UserRepository;
 import com.angbot.slack.dto.ApiChannelDto;
 import com.angbot.slack.dto.ApiPresenceDto;
 import com.angbot.slack.dto.ApiUserDto;
 import com.angbot.slack.object.Channel;
 import com.angbot.slack.object.SUser;
-import com.angbot.spac.SlackSpecification;
+import com.angbot.util.CodeGitHub;
 import com.angbot.util.CodeNaver;
 import com.angbot.util.CodeSlack;
 import com.angbot.util.PrintToSlackUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 @Service
 public class CommandApiService {
-
-	@Autowired
-	UserRepository userRepository;
 
 	@Autowired
 	SlackRestTemplate slackRestTemplate;
@@ -48,12 +43,15 @@ public class CommandApiService {
 	@Autowired
 	NaverRestTemplate naverRestTemplate;
 
+	@Autowired
+	GitHubRestTemplate gitHubRestTemplate;
+
 	@Value("${slack.api.token}")
 	private String token;
 
 	public static final Logger LOG = LoggerFactory.getLogger(CommandApiService.class);
 
-	public String userList() {
+	public void initUser() {
 		/* Set Slack User Info Param */
 		Map<String, Object> param = Maps.newConcurrentMap();
 		param.put("token", token);
@@ -68,17 +66,54 @@ public class CommandApiService {
 			for (SUser sUser : userDto.getResponseItem()) {
 				user = new User(sUser);
 				param.put("user", user.getId());
-				ApiPresenceDto result = slackRestTemplate.getApiCaller(CodeSlack.GET_Active.getUrl(),
-						ApiPresenceDto.class, param);
-				userRepository.save(new User(user, result.getPresence()));
+				ApiPresenceDto result = slackRestTemplate.getApiCaller(CodeSlack.GET_Active.getUrl(), ApiPresenceDto.class, param);
+				user = new User(user, result.getPresence());
+				SlackCmdCache.userMap.put(user.getId(), user);
 			}
 		}
 
 		/* Query Active User */
-		Specifications<User> specifications = Specifications.where(SlackSpecification.activeUser("active"));
-		List<User> list = userRepository.findAll(specifications);
+		//Specifications<User> specifications = Specifications.where(SlackSpecification.activeUser("active"));
+		//List<User> list = userRepository.findAll(specifications);
+		//List<User> list
 
-		return PrintToSlackUtil.printUser(list);
+		//return "기능 고도화중";//PrintToSlackUtil.printUser(list);
+	}
+
+	public String userList() {
+		return PrintToSlackUtil.printUser();
+	}
+
+	public String issueList(StringTokenizer token) {
+		String msg = "";
+		try {
+			System.out.println(token.countTokens() );
+			String state = "open";
+			if(token.countTokens() > 0){
+				String query = token.nextToken();
+				if(query.equals("전체")){
+					state = "all";
+				} else if(query.equals("완료")){
+					state = "closed";
+				}
+			}
+
+
+			Map<String, Object> param = Maps.newConcurrentMap();
+			param.put("state", state);
+
+			String result = gitHubRestTemplate.getApiCaller(CodeGitHub.GET_ISSUES.getUrl(), param);
+
+			ObjectMapper om = new ObjectMapper();
+			List<Map<String,Object>> list = Lists.newArrayList();
+			list = om.readValue(result, List.class);
+
+			msg = PrintToSlackUtil.printIssue(list);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+		return msg;
 	}
 
 	public String searchImage(StringTokenizer token) {
@@ -311,25 +346,17 @@ public class CommandApiService {
 		ApiChannelDto chanDto = new ApiChannelDto();
 		chanDto = slackRestTemplate.getApiCaller(CodeSlack.GET_CHANEELS.getUrl(), chanDto.getClass(), param);
 
-		List<User> list = userRepository.findAll();
-
-		// id 기준 정렬 그냥 심심해서 람다 써봄 ㅋ 의미 없음.
-		list.sort((User x, User y) -> x.getId().compareTo(y.getId()));
-
 		for (Channel channel : chanDto.getResponseItem()) {
-			for (User user : list) {
-				if (channel.getTopic().getCreator().equals(user.getId())) {
-					channel.setId(user.getNick());
-					isCreator = true;
-					break;
-				}
-				if (channel.getPurpose().getCreator().equals(user.getId())) {
-					if (!isCreator) {
-						channel.setId(user.getNick());
-						break;
-					}
+			if (SlackCmdCache.userMap.containsKey(channel.getTopic().getCreator())) {
+				channel.setId(SlackCmdCache.userMap.get(channel.getTopic().getCreator()).getNick());
+				isCreator = true;
+			}
+			if (SlackCmdCache.userMap.containsKey(channel.getPurpose().getCreator())) {
+				if (!isCreator) {
+					channel.setId(SlackCmdCache.userMap.get(channel.getPurpose().getCreator()).getNick());
 				}
 			}
+
 			isCreator = false;
 			String subject = "";
 			subject = channel.getTopic().getValue() != null && !channel.getTopic().getValue().equals("")

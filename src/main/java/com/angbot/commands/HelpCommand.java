@@ -17,10 +17,15 @@ public class HelpCommand extends CommCommand{
 	}
 	
 	@Override
+	public String help() {	
+		return "angbot 명령어 사용법";
+	}
+	
+	@Override
 	public String run(StringTokenizer token) throws Exception {
 		// TODO Auto-generated method stub
 		if(!this.validation(token)){
-			return "`ex) !�궗�슜踰� (�뙆�씪留ㅽ꽣 �뾾�쓬)`";
+			return "`ex) !사용법 (파라매터없음)`";
 		}
 		return PrintToSlackUtil.printHelp();
 	}

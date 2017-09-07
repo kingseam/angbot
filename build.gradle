@@ -4,7 +4,6 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
-        classpath 'org.springframework:springloaded:1.2.4.RELEASE'
     }
 }
 
@@ -12,11 +11,6 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
-
-jar {
-    baseName = 'gs-spring-boot'
-    version =  '0.1.0'
-}
 
 repositories {
     mavenCentral()
@@ -26,15 +20,12 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    // tag::jetty[]
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile("org.springframework.boot:spring-boot-starter-web")
     compile('org.codehaus.jackson:jackson-mapper-asl:1.9.13')
     compile('com.google.guava:guava:14.0.1')
     compile('org.apache.httpcomponents:httpcore:4.4.1')	
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
     compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
-    compile files("${System.properties['java.home']}/../lib/tools.jar")
     compile group: 'org.springframework', name: 'spring-websocket', version: '4.3.9.RELEASE'
     compile group: 'commons-configuration', name: 'commons-configuration', version: '1.7'
     compile('org.apache.httpcomponents:httpclient:4.5.1')
@@ -45,5 +36,19 @@ dependencies {
     runtime('org.hsqldb:hsqldb')
 	runtime('mysql:mysql-connector-java')	 
     
+    compile('org.apache.httpcomponents:httpclient:4.5.1')    
+    compile('org.openkoreantext:open-korean-text:2.1.0')
     testCompile("junit:junit")
+}
+
+jar {
+    baseName = 'angbot'
+    version = '0.0.0'
+    archiveName = 'angbot.jar'
+    manifest {
+        attributes 'Main-Class': 'com.angbot.application.Application',
+                   'Implementation-Title': baseName,
+                   'Implementation-Version': version
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }

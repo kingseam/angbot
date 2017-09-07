@@ -3,30 +3,31 @@ package com.angbot.commands;
 import java.util.StringTokenizer;
 
 import com.angbot.service.CommandApiService;
+import com.angbot.util.PrintToSlackUtil;
 
-public class NaverCafeCommand extends CommCommand{
+public class NoticeCommand extends CommCommand{
 	
-	public NaverCafeCommand(CommandApiService service) {
+	public NoticeCommand(CommandApiService service) {
 		super(service);
 	}
 	
 	@Override
 	public String command() {
-		return "!카페";
+		return "!공지";
 	}
 	
 	@Override
 	public String help() {	
-		return "남궁성코드초보스터디 카페 최신글을 가져온다";
+		return "slack 공지사항";
 	}
 	
 	@Override
 	public String run(StringTokenizer token) throws Exception {
+		// TODO Auto-generated method stub
 		if(!this.validation(token)){
-			return "`ex) !카페 (파라메터없음)`";
+			return "`ex) !사용법 (파라매터없음)`";
 		}
-		
-		return this.service.searchCafe(token);
+		return PrintToSlackUtil.printNotice();
 	}
 	
 	public boolean validation(StringTokenizer token){		

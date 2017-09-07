@@ -18,7 +18,6 @@ import com.angbot.common.JsonResponseHandler;
 import com.angbot.common.SlackMessageHandler;
 import com.angbot.common.SlackRestTemplate;
 import com.angbot.common.WebsocketClientEndpoint;
-import com.angbot.repository.UserRepository;
 import com.angbot.service.CommandApiService;
 import com.angbot.slack.dto.ApiRealTimeMessageDto;
 import com.angbot.util.ApiResDto;
@@ -26,11 +25,8 @@ import com.angbot.util.CodeSlack;
 import com.google.common.collect.Maps;
 
 @RestController
-@RequestMapping("/api/slack")
 public class SlackApiController extends BaseApiController {
 
-	@Autowired
-	UserRepository userRepository;
 
 	@Autowired
 	BaseRestTemplate bestRestTemplate;
@@ -51,7 +47,7 @@ public class SlackApiController extends BaseApiController {
 
 	public static final Logger LOG = LoggerFactory.getLogger(SlackApiController.class);
 
-	@RequestMapping(value = "/rtm/connect", method = RequestMethod.GET)
+	@RequestMapping(value = {"/", "/rtm/connect"}, method = {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody ApiResDto rtmConnect() throws Exception {
 		ApiResDto resDto = new ApiResDto("rtmConnect");
 		ApiRealTimeMessageDto rtmDto = new ApiRealTimeMessageDto();
@@ -71,6 +67,7 @@ public class SlackApiController extends BaseApiController {
 				message.put("channel", "C2F31LCTZ");
 				message.put("text", "`angbot RTM serv start...`");
 
+				slackCommService.initUser();
 				ObjectMapper om = new ObjectMapper();
 				// websocket.sendMessage(om.writeValueAsString(message));
 				Thread.sleep(25000);
@@ -100,6 +97,15 @@ public class SlackApiController extends BaseApiController {
 		}
 
 		websocket = null;
+		return resDto;
+	}
+
+	@RequestMapping(value = "/user/init", method = RequestMethod.GET)
+	public @ResponseBody ApiResDto userInit() throws IOException {
+		ApiResDto resDto = new ApiResDto("rtmConnect");
+
+		slackCommService.initUser();
+
 		return resDto;
 	}
 

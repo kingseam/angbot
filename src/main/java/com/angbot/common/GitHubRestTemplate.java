@@ -22,9 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class NaverRestTemplate {
+public class GitHubRestTemplate {
 
-	private static final Logger LOG = LoggerFactory.getLogger(NaverRestTemplate.class);
+	private static final Logger LOG = LoggerFactory.getLogger(GitHubRestTemplate.class);
 
 	private static final String DEFAULT_CONTENT_TYPE_VALUE = "application/json;charset=utf-8";
 	private static final String NAVER_API_ID = "X-Naver-Client-Id";
@@ -37,13 +37,7 @@ public class NaverRestTemplate {
 	private HttpComponentsClientHttpRequestFactory requestFactory;
 	private HttpHeaders headers;
 
-	@Value("${naver.api.id}")
-	private String api_id;
-
-	@Value("${naver.api.secret}")
-	private String api_secret;
-
-	public NaverRestTemplate() {
+	public GitHubRestTemplate() {
 		try {
 			restTemplate = new RestTemplate();
 			setClientFactory();
@@ -77,8 +71,6 @@ public class NaverRestTemplate {
 	public void setHeader() {
 		headers = new HttpHeaders();
 		headers.add(HttpHeaders.CONTENT_TYPE, DEFAULT_CONTENT_TYPE_VALUE);
-		headers.add(NAVER_API_ID, api_id);
-		headers.add(NAVER_API_SECRET, api_secret);
 	}
 
 	public String getApiCaller(String url, Map<String, Object> param) {
@@ -95,33 +87,6 @@ public class NaverRestTemplate {
 
 		LOG.info("response  >>{} ", entity);
 		ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class, param);
-
-		LOG.info("response  >>{} ", response);
-
-		long end = System.currentTimeMillis();
-		LOG.info("RequestTime  >> " + (end - start) / 1000);
-
-		LOG.info("StatusCode >> " + response.getStatusCode());
-		// TODO 추후 별도 API Log Message 저장필요.
-		// LOG.info("Response >> " + response.getBody() );
-
-		return response.getBody();
-	}
-	
-	public String postApiCaller(String url, Map<String, Object> param) {
-		LOG.info("Request >> " + url);
-		LOG.info("param >> " + param);
-		if (getHttpHeaders() == null) {
-			// throw new
-			// BizMsgException(RecipeAPICode.EMPTY_HTTP_HEADER.getCode());
-		}
-
-		HttpEntity<String> entity = new HttpEntity<String>(getHttpHeaders());
-
-		long start = System.currentTimeMillis();
-
-		LOG.info("response  >>{} ", entity);
-		ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class, param);
 
 		LOG.info("response  >>{} ", response);
 

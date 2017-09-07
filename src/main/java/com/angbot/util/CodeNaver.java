@@ -6,6 +6,7 @@ public enum CodeNaver {
 	GET_IMAGE("/v1/search/image.json?display=1&sort=sim&filter=medium&query={query}"),
 	GET_DOCUMENT("/v1/search/encyc.json?display=1&query={query}"),
 	GET_CAFE("/v1/search/cafearticle.json?display=5&sort=date&query=javachobostudy"),
+	GET_SHORTURL("/v1/util/shorturl?url={url}"),
 	
 	S_E001("Naver Api 연동 실패", "001"),
 	
