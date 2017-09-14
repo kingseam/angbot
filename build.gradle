@@ -8,7 +8,6 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
@@ -29,26 +28,19 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-websocket', version: '4.3.9.RELEASE'
     compile group: 'commons-configuration', name: 'commons-configuration', version: '1.7'
     compile('org.apache.httpcomponents:httpclient:4.5.1')
-    
-    // https://mvnrepository.com/artifact/org.jsoup/jsoup
-	compile group: 'org.jsoup', name: 'jsoup', version: '1.10.3'
-    
-    runtime('org.hsqldb:hsqldb')
-	runtime('mysql:mysql-connector-java')	 
-    
+	compile group: 'org.jsoup', name: 'jsoup', version: '1.10.3'    
     compile('org.apache.httpcomponents:httpclient:4.5.1')    
     compile('org.openkoreantext:open-korean-text:2.1.0')
     testCompile("junit:junit")
 }
 
 jar {
-    baseName = 'angbot'
-    version = '0.0.0'
-    archiveName = 'angbot.jar'
     manifest {
-        attributes 'Main-Class': 'com.angbot.application.Application',
-                   'Implementation-Title': baseName,
-                   'Implementation-Version': version
+		attributes 'Main-Class' : 'com.angbot.application.Application', 'Version' : 1.0
+	}
+	archiveName "angbot.jar"
+    dependsOn configurations.runtime
+    from {
+        configurations.compile.collect {it.isDirectory()? it: zipTree(it)}
     }
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
