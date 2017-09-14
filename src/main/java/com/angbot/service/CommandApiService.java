@@ -324,13 +324,16 @@ public class CommandApiService {
 			String weatherText = weatherElements.select("span.u_hc:eq(0)").text();
 			String weatherTemperature = weatherElements.select("div.wt_text strong em").text();
 
+			String line = "================\n";
+			
 			// timeLine info
-			List<String> timeLineInfos = new ArrayList<>();
-			doc.select("div.grap_box ul>li").forEach(e -> {
-				timeLineInfos.add(e.select("strong").text() + "시 " + e.select("span.wt_status").text() + " "
-						+ e.select("em").text() + "℃");
+			StringBuilder timeLineInfos = new StringBuilder();
+			timeLineInfos.append(line);
+			doc.select("div.flick-ct div.grap_box").get(0).select("ul>li").forEach(e -> {
+				timeLineInfos.append(e.select("strong").text() + "시 " + e.select("span.wt_status").text() + " "
+						+ e.select("em").text() + "℃\n");
 			});
-
+			timeLineInfos.append(line);
 			return PrintToSlackUtil.printWeather(weatherText + " " + weatherTemperature + "℃",
 					timeLineInfos.toString());
 		}
