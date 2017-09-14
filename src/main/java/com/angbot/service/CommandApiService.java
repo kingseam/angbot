@@ -329,10 +329,14 @@ public class CommandApiService {
 			// timeLine info
 			StringBuilder timeLineInfos = new StringBuilder();
 			timeLineInfos.append(line);
-			doc.select("div.flick-ct div.grap_box").get(0).select("ul>li").forEach(e -> {
-				timeLineInfos.append(e.select("strong").text() + "시 " + e.select("span.wt_status").text() + " "
-						+ e.select("em").text() + "℃\n");
-			});
+			Elements weatherSection = doc.select("div.flick-ct div.grap_box");
+			if(!weatherSection.isEmpty()) {
+				weatherSection.get(0).select("ul>li").forEach(e -> {
+					timeLineInfos.append(e.select("strong").text() + "시 " + e.select("span.wt_status").text() + " " + e.select("em").text() + "℃\n");
+				});
+			} else {
+				return "동네를 제대로 입력해주세염 ㅇ(^ㅁ~)ㅇ";
+			}
 			timeLineInfos.append(line);
 			return PrintToSlackUtil.printWeather(weatherText + " " + weatherTemperature + "℃",
 					timeLineInfos.toString());
