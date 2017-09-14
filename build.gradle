@@ -28,7 +28,7 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-websocket', version: '4.3.9.RELEASE'
     compile group: 'commons-configuration', name: 'commons-configuration', version: '1.7'
     compile('org.apache.httpcomponents:httpclient:4.5.1')
-	compile group: 'org.jsoup', name: 'jsoup', version: '1.10.3'
+	compile group: 'org.jsoup', name: 'jsoup', version: '1.10.3'    
     compile('org.apache.httpcomponents:httpclient:4.5.1')    
     compile('org.openkoreantext:open-korean-text:2.1.0')
     testCompile("junit:junit")
