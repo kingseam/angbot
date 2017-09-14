@@ -34,22 +34,14 @@ dependencies {
     testCompile("junit:junit")
 }
 
-
-mainClassName = 'com.angbot.application.Application'
-sourceCompatibility = 1.8
-version = '1.0'
-
 jar {
+    baseName = 'angbot'
+    version = '0.0.0'
+    archiveName = 'angbot.jar'
     manifest {
-        attributes  'Title': 'My Application', 'Version': version, 'Main-Class': mainClassName
+        attributes 'Main-Class': 'com.angbot.application.Application',
+                   'Implementation-Title': baseName,
+                   'Implementation-Version': version
     }
-    archiveName 'angbot.jar'
-    dependsOn configurations.runtime
-    from {
-        configurations.compile.collect {it.isDirectory()? it: zipTree(it)}
-    }
-}
- 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.2'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
