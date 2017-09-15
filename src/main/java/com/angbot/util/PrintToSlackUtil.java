@@ -224,7 +224,7 @@ public class PrintToSlackUtil{
 					resultMsg.append(" => 여자1호");
 				}
 				if(user.getValue().getNick().equals("sejongpark")){
-					resultMsg.append(" => 남자1호");
+					resultMsg.append(" => 남자1호(스토커)");
 				}
 				if(user.getValue().getNick().equals("foxrain")){
 					resultMsg.append(" => 봇?");
