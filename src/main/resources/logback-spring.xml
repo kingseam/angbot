@@ -1,34 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-	<property name="LOG_PATH" value="/home/hosting_users/angbot" /> <!-- 콘솔 로그 출력 -->
-	<appender name="TEXT_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<charset>UTF-8</charset>
-			<Pattern>%d %-4relative [%thread] %-5level %logger{35} - %msg%n
-			</Pattern>
-		</encoder>
-	</appender> 
-	<!-- Logstash JSON 형식으로 파일 로그 생성 --> <!-- /var/log/applicaion/log.json 파일에 최신 로그 생성 --> 
-	<!-- /var/log/applicaion/log_2016-07-15.0.json 파일에 과거 로그 보관 
-	<!-- 5MB 초과, 	날짜 변경 시점마다 생성, 생성된지 3일 이상된 파일은 삭제 -->
-	<appender name="JSON_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<File>${LOG_PATH}/log.json</File>
-		<encoder class="net.logstash.logback.encoder.LogstashEncoder">
-			<jsonGeneratorDecorator class="com.jsonobject.example.logback.PrettyPrintingDecorator" />
-			<jsonFactoryDecorator class="com.jsonobject.example.logback.ISO8601DateDecorator" />
-		</encoder>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>${LOG_PATH}/log_%d{yyyy-MM-dd}.%i.json
-			</FileNamePattern>
-			<timeBasedFileNamingAndTriggeringPolicy
-				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-				<maxFileSize>5MB</maxFileSize>
-			</timeBasedFileNamingAndTriggeringPolicy>
-			<maxHistory>3</maxHistory>
-		</rollingPolicy>
-	</appender> <!-- INFO 레벨 이하 로그를 콘솔 및 파일로 출력 -->
-	<root level="INFO">
-		<appender-ref ref="TEXT_CONSOLE" />
-		<appender-ref ref="JSON_FILE" />
-	</root>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />    
+    <!-- 변수 지정 -->
+    <property name="LOG_DIR" value="/home/hosting_users/angbot/logs" />
+    <property name="LOG_PATH_NAME" value="${LOG_DIR}/data.log" />
+    <!-- FILE Appender -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH_NAME}</file>
+        <!-- 일자별로 로그파일 적용하기 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH_NAME}.%d{yyyyMMdd}</fileNamePattern>
+            <maxHistory>60</maxHistory> <!-- 일자별 백업파일의 보관기간 -->
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5p] [%F]%M\(%L\) : %m%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+      <layout class="ch.qos.logback.classic.PatternLayout">
+        <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5p] [%F]%M\(%L\) : %m%n</pattern>
+      </layout>
+    </appender>
+    <!-- TRACE > DEBUG > INFO > WARN > ERROR, 대소문자 구분 안함 -->
+    <!-- profile 을 읽어서 appender 을 설정할수 있다.(phase별 파일을 안만들어도 되는 좋은 기능) -->
+    <springProfile name="local">
+      <root level="DEBUG">
+        <appender-ref ref="FILE" />
+        <appender-ref ref="STDOUT" />
+      </root>
+    </springProfile>
+    <springProfile name="real">
+      <root level="INFO">
+        <appender-ref ref="FILE" />
+        <appender-ref ref="STDOUT" />
+      </root>
+    </springProfile>
 </configuration>
