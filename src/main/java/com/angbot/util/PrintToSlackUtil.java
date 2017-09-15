@@ -221,7 +221,10 @@ public class PrintToSlackUtil{
 					resultMsg.append(" => 개발변태 ");
 				}
 				if(user.getValue().getNick().equals("yuaming")){
-					resultMsg.append(" => 실망의 아우성");
+					resultMsg.append(" => 여자1호");
+				}
+				if(user.getValue().getNick().equals("sejongpark")){
+					resultMsg.append(" => 남자1호");
 				}
 				if(user.getValue().getNick().equals("foxrain")){
 					resultMsg.append(" => 봇?");
