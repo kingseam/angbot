@@ -54,7 +54,7 @@ public class NLPCommand extends CommCommand{
 	    //System.out.println(phrases);
 	    // [한국어(Noun: 0, 3), 처리(Noun: 5, 2), 처리하는 예시(Noun: 5, 7), 예시(Noun: 10, 2), #한국어(Hashtag: 18, 4)]
 
-		return OpenKoreanTextProcessorJava.tokensToJavaKoreanTokenList(tokens).toString();
+		return OpenKoreanTextProcessorJava.tokensToJavaKoreanTokenList(tokens).parallelStream().toString();
 	}
 
 	public boolean validation(StringTokenizer token){
