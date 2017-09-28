@@ -3,6 +3,7 @@ package com.angbot.service;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -11,6 +12,9 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.openkoreantext.processor.OpenKoreanTextProcessorJava;
+import org.openkoreantext.processor.tokenizer.KoreanTokenizer;
+import org.openkoreantext.processor.util.KoreanPos;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +37,8 @@ import com.angbot.util.CodeSlack;
 import com.angbot.util.PrintToSlackUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
+import scala.collection.JavaConverters;
 
 @Service
 public class CommandApiService {
@@ -78,6 +84,66 @@ public class CommandApiService {
 		//List<User> list
 
 		//return "기능 고도화중";//PrintToSlackUtil.printUser(list);
+	}
+
+	public String searchRecipe(StringTokenizer tokener) {
+		String token = "";
+		while (tokener.hasMoreTokens()) {
+			token += tokener.nextToken();
+			if (tokener.countTokens() > 0)
+				token += " ";
+		}
+
+		Collection<String> lst = SlackCmdCache.vec.wordsNearest(token.toString().toLowerCase(), 25);
+		if(lst.size() < 1){
+			CharSequence normalized = OpenKoreanTextProcessorJava.normalize(token.toString().toLowerCase());
+		    List<KoreanTokenizer.KoreanToken> tokens = JavaConverters.seqAsJavaList(OpenKoreanTextProcessorJava.tokenize(normalized));
+		    for(KoreanTokenizer.KoreanToken tokenk : tokens){
+		    	if ( tokenk.pos() == KoreanPos.Noun() ){
+			    	lst.addAll(SlackCmdCache.vec.wordsNearest(tokenk.text(), 5));
+		    	}
+		    }
+		}
+
+		List<String> tempList = new ArrayList<String>(lst);
+
+		if(token.toString().toLowerCase().contains("제육")){
+			tempList.add(0, token.toString().toLowerCase()+"_돼지고기");
+		}
+		int j = 0;
+		for(int i=0; i<tempList.size(); i++){
+
+			if(tempList.get(i).split("_").length > 1){
+				if(token.toString().toLowerCase().contains(tempList.get(i).split("_")[1])){
+					if(
+							   (token.toString().toLowerCase().contains("김치") && tempList.get(i).split("_")[1].equals("김"))
+							|| (token.toString().toLowerCase().contains("떡갈비") && tempList.get(i).split("_")[1].equals("떡"))
+							|| ((token.toString().toLowerCase().contains("파스타") || token.toString().toLowerCase().contains("마파")) && tempList.get(i).split("_")[1].equals("파"))
+							|| (token.toString().toLowerCase().contains("무침") && !token.toString().toLowerCase().contains("무말랭이") && tempList.get(i).split("_")[1].equals("무"))
+							|| (token.toString().toLowerCase().contains("콩나물") && tempList.get(i).split("_")[1].equals("콩"))
+							|| (token.toString().toLowerCase().contains("오징어채") && tempList.get(i).split("_")[1].equals("오징어"))
+							|| (token.toString().toLowerCase().contains("치킨마요") && tempList.get(i).split("_")[1].equals("마"))
+							|| (token.toString().toLowerCase().contains("배추") && tempList.get(i).split("_")[1].equals("배"))
+							|| (token.toString().toLowerCase().contains("햄버거") && tempList.get(i).split("_")[1].equals("햄"))
+							|| (token.toString().toLowerCase().contains("스파게티") && tempList.get(i).split("_")[1].equals("파"))
+					){
+
+					}else{
+					    tempList.add(0, tempList.get(i));
+						tempList.remove(i+1);
+					}
+				}
+			}else{
+				tempList.remove(i);
+			}
+		}
+
+		if(tempList.size() == 0){
+			return token.toString() + ":" + "표본 데이터 너무 적음 - 추천 불가";
+		}
+
+
+		return token.toString() + ":" + tempList.toString();
 	}
 
 	public String userList() {
@@ -308,9 +374,9 @@ public class CommandApiService {
 			if (token.countTokens() > 0)
 				query += " ";
 		}
-		
+
 		query += "%20날씨";
-		
+
 		try {
 			doc = Jsoup.connect(
 					"http://m.search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + query + "&where=m")
@@ -325,7 +391,7 @@ public class CommandApiService {
 			String weatherTemperature = weatherElements.select("div.wt_text strong em").text();
 
 			String line = "================\n";
-			
+
 			// timeLine info
 			StringBuilder timeLineInfos = new StringBuilder();
 			timeLineInfos.append(line);
