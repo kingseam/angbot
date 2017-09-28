@@ -447,7 +447,7 @@ public class CommandApiService {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void initCmd() {
 		System.out.println("init");
-		SlackCmdCache.initWord2Vec();
+		//SlackCmdCache.initWord2Vec();
 		CommCommand cmd = null;
 		try {
 			for (Class clazz : SlackCmdCache.registerdCommands) {
