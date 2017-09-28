@@ -45,11 +45,15 @@ public class SlackCmdCache {
 	public static Word2Vec vec;
 
 	public SlackCmdCache() {
+
+	}
+
+	public static void initWord2Vec(){
 		 try {
-			vec = WordVectorSerializer.loadFullModel("/home/hosting_users/angbot/out_20170926_1448.out");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+				vec = WordVectorSerializer.loadFullModel("/home/hosting_users/angbot/out_20170926_1448.out");
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 }
