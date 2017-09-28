@@ -31,8 +31,7 @@ dependencies {
 	compile group: 'org.jsoup', name: 'jsoup', version: '1.10.3'    
     compile('org.apache.httpcomponents:httpclient:4.5.1')    
     compile('org.openkoreantext:open-korean-text:2.1.1')
-    compile('org.deeplearning4j:deeplearning4j-nlp:0.9.1')
-    compile('info.debatty:java-string-similarity:1.0.0')    	    		
+    compile('org.deeplearning4j:deeplearning4j-nlp:0.9.1')  		
     testCompile("junit:junit")
 }
 
