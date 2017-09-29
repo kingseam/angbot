@@ -34,7 +34,6 @@ dependencies {
     compile('org.deeplearning4j:deeplearning4j-nlp:0.9.1')
     compile 'org.nd4j:nd4j-native:0.9.1'    
   	compile 'org.nd4j:nd4j-native:0.9.1:linux-x86_64'
-  	compile 'org.nd4j:nd4j-native:0.9.1:linux-x86_64-openblas'
     testCompile("junit:junit")
 }
 
