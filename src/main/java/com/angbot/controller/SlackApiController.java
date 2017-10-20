@@ -36,6 +36,8 @@ public class SlackApiController extends BaseApiController {
 
 	WebsocketClientEndpoint websocket;
 
+	WebsocketClientEndpoint websocket2;
+
 	@Autowired
 	JsonResponseHandler jsonHandler;
 
@@ -44,6 +46,9 @@ public class SlackApiController extends BaseApiController {
 
 	@Value("${slack.api.token}")
 	private String token;
+
+	@Value("${slack2.api.token}")
+	private String token2;
 
 	public static final Logger LOG = LoggerFactory.getLogger(SlackApiController.class);
 
@@ -61,6 +66,40 @@ public class SlackApiController extends BaseApiController {
 			if (rtmDto.isResult()) {
 				slackCommService.initCmd();
 				websocket = new WebsocketClientEndpoint.WebsocketClientBuilder().setURI(rtmDto.getUrl())
+						.setServer(new SlackMessageHandler()).build();
+				Map<String, String> message = Maps.newConcurrentMap();
+				message.put("type", "message");
+				message.put("channel", "C2F31LCTZ");
+				message.put("text", "`angbot RTM serv start...`");
+
+				slackCommService.initUser();
+				ObjectMapper om = new ObjectMapper();
+				// websocket.sendMessage(om.writeValueAsString(message));
+				Thread.sleep(25000);
+			}
+		} else {
+			slackCommService.initCmd();
+		}
+
+		return resDto;
+	}
+
+
+	@RequestMapping(value = {"/cnsblog"}, method = {RequestMethod.GET, RequestMethod.POST})
+	public @ResponseBody ApiResDto cnsConnect() throws Exception {
+		ApiResDto resDto = new ApiResDto("rtmConnect");
+		ApiRealTimeMessageDto rtmDto = new ApiRealTimeMessageDto();
+
+		/* Set Slack User Info Param */
+		Map<String, Object> param = Maps.newConcurrentMap();
+		System.out.println("asdasd");
+		param.put("token", token2);
+		param.put("pretty", 1);
+		if (websocket2 == null || websocket2.userSession == null) {
+			rtmDto = slackRestTemplate.getApiCaller(CodeSlack.GET_RTMSTART.getUrl(), rtmDto.getClass(), param);
+			if (rtmDto.isResult()) {
+				slackCommService.initCmd();
+				websocket2 = new WebsocketClientEndpoint.WebsocketClientBuilder().setURI(rtmDto.getUrl())
 						.setServer(new SlackMessageHandler()).build();
 				Map<String, String> message = Maps.newConcurrentMap();
 				message.put("type", "message");
