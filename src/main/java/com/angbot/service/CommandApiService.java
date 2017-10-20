@@ -55,9 +55,10 @@ public class CommandApiService {
 	@Value("${slack.api.token}")
 	private String token;
 
+
 	public static final Logger LOG = LoggerFactory.getLogger(CommandApiService.class);
 
-	public void initUser() {
+	public void initUser(String token) {
 		/* Set Slack User Info Param */
 		Map<String, Object> param = Maps.newConcurrentMap();
 		param.put("token", token);

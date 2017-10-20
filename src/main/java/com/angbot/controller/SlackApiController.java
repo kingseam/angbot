@@ -72,7 +72,7 @@ public class SlackApiController extends BaseApiController {
 				message.put("channel", "C2F31LCTZ");
 				message.put("text", "`angbot RTM serv start...`");
 
-				slackCommService.initUser();
+				slackCommService.initUser(token);
 				ObjectMapper om = new ObjectMapper();
 				// websocket.sendMessage(om.writeValueAsString(message));
 				Thread.sleep(25000);
@@ -106,7 +106,7 @@ public class SlackApiController extends BaseApiController {
 				message.put("channel", "C2F31LCTZ");
 				message.put("text", "`angbot RTM serv start...`");
 
-				slackCommService.initUser();
+				slackCommService.initUser(token2);
 				ObjectMapper om = new ObjectMapper();
 				// websocket.sendMessage(om.writeValueAsString(message));
 				Thread.sleep(25000);
@@ -136,15 +136,6 @@ public class SlackApiController extends BaseApiController {
 		}
 
 		websocket = null;
-		return resDto;
-	}
-
-	@RequestMapping(value = "/user/init", method = RequestMethod.GET)
-	public @ResponseBody ApiResDto userInit() throws IOException {
-		ApiResDto resDto = new ApiResDto("rtmConnect");
-
-		slackCommService.initUser();
-
 		return resDto;
 	}
 
