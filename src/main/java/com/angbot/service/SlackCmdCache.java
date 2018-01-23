@@ -1,11 +1,7 @@
 package com.angbot.service;
 
-import java.io.FileNotFoundException;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
-import org.deeplearning4j.models.word2vec.Word2Vec;
 
 import com.angbot.commands.GitHubIssueCommand;
 import com.angbot.commands.HelpCommand;
@@ -16,7 +12,6 @@ import com.angbot.commands.NaverDocumentCommand;
 import com.angbot.commands.NaverImageCommand;
 import com.angbot.commands.NaverMapCommand;
 import com.angbot.commands.NoticeCommand;
-import com.angbot.commands.RecipeCommand;
 import com.angbot.commands.SlackChannelCommand;
 import com.angbot.commands.SlackUserCommand;
 import com.angbot.commands.WeatherCommand;
@@ -38,22 +33,11 @@ public class SlackCmdCache {
 			NaverCafeCommand.class,
 			WeatherCommand.class,
 			GitHubIssueCommand.class,
-			NLPCommand.class,
-			RecipeCommand.class
+			NLPCommand.class
     };
-
-	public static Word2Vec vec;
 
 	public SlackCmdCache() {
 
 	}
 
-	public static void initWord2Vec(){
-		 try {
-				vec = WordVectorSerializer.loadFullModel("/home/hosting_users/angbot/out_20170926_1448.out");
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	}
 }
