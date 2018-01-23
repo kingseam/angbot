@@ -84,40 +84,6 @@ public class SlackApiController extends BaseApiController {
 		return resDto;
 	}
 
-
-	@RequestMapping(value = {"/cnsblog"}, method = {RequestMethod.GET, RequestMethod.POST})
-	public @ResponseBody ApiResDto cnsConnect() throws Exception {
-		ApiResDto resDto = new ApiResDto("rtmConnect");
-		ApiRealTimeMessageDto rtmDto = new ApiRealTimeMessageDto();
-
-		/* Set Slack User Info Param */
-		Map<String, Object> param = Maps.newConcurrentMap();
-		System.out.println("asdasd");
-		param.put("token", token2);
-		param.put("pretty", 1);
-		if (websocket2 == null || websocket2.userSession == null) {
-			rtmDto = slackRestTemplate.getApiCaller(CodeSlack.GET_RTMSTART.getUrl(), rtmDto.getClass(), param);
-			if (rtmDto.isResult()) {
-				slackCommService.initCmd();
-				websocket2 = new WebsocketClientEndpoint.WebsocketClientBuilder().setURI(rtmDto.getUrl())
-						.setServer(new SlackMessageHandler()).build();
-				Map<String, String> message = Maps.newConcurrentMap();
-				message.put("type", "message");
-				message.put("channel", "C2F31LCTZ");
-				message.put("text", "`angbot RTM serv start...`");
-
-				slackCommService.initUser(token2);
-				ObjectMapper om = new ObjectMapper();
-				// websocket.sendMessage(om.writeValueAsString(message));
-				Thread.sleep(25000);
-			}
-		} else {
-			slackCommService.initCmd();
-		}
-
-		return resDto;
-	}
-
 	@RequestMapping(value = "/rtm/close", method = RequestMethod.GET)
 	public @ResponseBody ApiResDto rtmClose() throws IOException {
 		ApiResDto resDto = new ApiResDto("rtmConnect");
