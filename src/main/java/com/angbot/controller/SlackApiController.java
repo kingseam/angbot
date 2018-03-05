@@ -61,6 +61,7 @@ public class SlackApiController extends BaseApiController {
 		Map<String, Object> param = Maps.newConcurrentMap();
 		param.put("token", token);
 		param.put("pretty", 1);
+		param.put("batch_presence_aware", 1);
 		if (websocket == null || websocket.userSession == null) {
 			rtmDto = slackRestTemplate.getApiCaller(CodeSlack.GET_RTMSTART.getUrl(), rtmDto.getClass(), param);
 			if (rtmDto.isResult()) {
