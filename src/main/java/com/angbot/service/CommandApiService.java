@@ -273,9 +273,9 @@ public class CommandApiService {
 			if (token.countTokens() > 0)
 				query += " ";
 		}
-		
+
 		query += "%20날씨";
-		
+
 		try {
 			doc = Jsoup.connect(
 					"http://m.search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + query + "&where=m")
@@ -291,11 +291,13 @@ public class CommandApiService {
 
 			// timeLine info
 			List<String> timeLineInfos = new ArrayList<>();
-			doc.select("div.grap_box ul>li").forEach(e -> {
-				timeLineInfos.add(e.select("strong").text() + "시 " + e.select("span.wt_status").text() + " "
-						+ e.select("em").text() + "℃");
+			doc.select("div.grap_inner").get(0).select("ul>li").forEach(e -> {
+				timeLineInfos.add(
+							(e.select("span.btn_time").text().equals("") ? e.select("strong").text() + "시" : e.select("span.btn_time").text()) 
+							+ " " + e.select("span.ico_status2").text() + " "
+							+ e.select("span.wt_temp>em").text() + "℃"
+						);
 			});
-
 			return PrintToSlackUtil.printWeather(weatherText + " " + weatherTemperature + "℃",
 					timeLineInfos.toString());
 		}
@@ -333,7 +335,8 @@ public class CommandApiService {
 			isCreator = false;
 			String subject = "";
 			subject = channel.getTopic().getValue() != null && !channel.getTopic().getValue().equals("")
-					? channel.getTopic().getValue() : channel.getPurpose().getValue();
+					? channel.getTopic().getValue()
+					: channel.getPurpose().getValue();
 			channel.setSubject(subject);
 		}
 
