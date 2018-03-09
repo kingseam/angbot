@@ -3,8 +3,6 @@ package com.angbot.util;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.angbot.commands.CommCommand;
 import com.angbot.domain.User;
 import com.angbot.service.SlackCmdCache;
@@ -203,7 +201,7 @@ public class PrintToSlackUtil{
 		resultMsg.append("*접속 유저 정보*\n");
 		for(java.util.Map.Entry<String, User> user : SlackCmdCache.userMap.entrySet()){
 			if(user.getValue().getActive().equals("active")){
-				if(!StringUtils.isEmpty(user.getValue().getName()) && !user.getValue().getNick().equals("angbot")){
+				if(!user.getValue().getName().equals("angbot")){
 					resultMsg.append(user.getValue().getName().substring(0, user.getValue().getName().length()-1)+"*");
 					if(user.getValue().getNick().equals("angbot")){
 						resultMsg.append(" => 얘는 봇 ");
