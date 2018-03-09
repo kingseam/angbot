@@ -18,7 +18,8 @@ public class User {
 	public User(SUser user) {
 		this.nick = user.getName();
 		this.id = user.getId();
-		this.name = user.getReal_name();
+		this.name = user.getProfile().getDisplay_name();
+		System.out.println("this.name="+this.name);
 	}
 
 	public User(User user, String active) {

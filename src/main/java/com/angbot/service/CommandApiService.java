@@ -68,7 +68,7 @@ public class CommandApiService {
 				param.put("user", user.getId());
 				ApiPresenceDto result = slackRestTemplate.getApiCaller(CodeSlack.GET_Active.getUrl(), ApiPresenceDto.class, param);
 				user = new User(user, result.getPresence());
-				SlackCmdCache.userMap.put(user.getId(), user);
+				SlackCmdCache.userMap.put(user.getName(), user);
 			}
 		}
 

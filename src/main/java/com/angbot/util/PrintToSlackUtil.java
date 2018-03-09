@@ -3,6 +3,8 @@ package com.angbot.util;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.angbot.commands.CommCommand;
 import com.angbot.domain.User;
 import com.angbot.service.SlackCmdCache;
@@ -201,36 +203,44 @@ public class PrintToSlackUtil{
 		resultMsg.append("*접속 유저 정보*\n");
 		for(java.util.Map.Entry<String, User> user : SlackCmdCache.userMap.entrySet()){
 			if(user.getValue().getActive().equals("active")){
-				resultMsg.append(user.getValue().getNick().substring(0, user.getValue().getNick().length()-1)+"*");
-				if(user.getValue().getNick().equals("angbot")){
-					resultMsg.append(" => 얘는 봇 ");
+				if(!StringUtils.isEmpty(user.getValue().getName()) && !user.getValue().getNick().equals("angbot")){
+					resultMsg.append(user.getValue().getName().substring(0, user.getValue().getName().length()-1)+"*");
+					if(user.getValue().getNick().equals("angbot")){
+						resultMsg.append(" => 얘는 봇 ");
+					}
+					if(user.getValue().getNick().equals("angmagun")){
+						resultMsg.append(" => 루팡 ");
+					}
+					if(user.getValue().getNick().equals("eminency")){
+						resultMsg.append(" => 방장님 ");
+					}
+					if(user.getValue().getNick().equals("beginnerjsp")){
+						resultMsg.append(" => 여자킬러 ");
+					}
+					if(user.getValue().getNick().equals("loustler")){
+						resultMsg.append(" => 늪개발자");
+					}
+					if(user.getValue().getNick().equals("reactor")){
+						resultMsg.append(" => 개발변태 ");
+					}
+					if(user.getValue().getNick().equals("yuaming")){
+						resultMsg.append(" => 여자1호");
+					}
+					if(user.getValue().getNick().equals("sejongpark")){
+						resultMsg.append(" => 남자1호(스토커)");
+					}
+					if(user.getValue().getNick().equals("foxrain")){
+						resultMsg.append(" => 봇?");
+					}
+					if(user.getValue().getNick().equals("yohan")){
+						resultMsg.append(" => 정치갑");
+					}
+					if(user.getValue().getNick().equals("doubles")){
+						resultMsg.append(" => 행복전도사");
+					}
+					resultMsg.append("\n");
+					cnt++;
 				}
-				if(user.getValue().getNick().equals("angmagun")){
-					resultMsg.append(" => 루팡 ");
-				}
-				if(user.getValue().getNick().equals("eminency")){
-					resultMsg.append(" => 방장님 ");
-				}
-				if(user.getValue().getNick().equals("beginnerjsp")){
-					resultMsg.append(" => 여자킬러 ");
-				}
-				if(user.getValue().getNick().equals("loustler")){
-					resultMsg.append(" => 늪개발자");
-				}
-				if(user.getValue().getNick().equals("reactor")){
-					resultMsg.append(" => 개발변태 ");
-				}
-				if(user.getValue().getNick().equals("yuaming")){
-					resultMsg.append(" => 여자1호");
-				}
-				if(user.getValue().getNick().equals("sejongpark")){
-					resultMsg.append(" => 남자1호(스토커)");
-				}
-				if(user.getValue().getNick().equals("foxrain")){
-					resultMsg.append(" => 봇?");
-				}
-				resultMsg.append("\n");
-				cnt++;
 			}
 		}
 		resultMsg.append("[ 총"+ cnt +"명의 사람이 접속중 ] ```");
