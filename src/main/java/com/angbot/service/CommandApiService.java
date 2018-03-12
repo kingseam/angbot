@@ -331,17 +331,14 @@ public class CommandApiService {
 			timeLineInfos.append(line);
 			Elements weatherSection = doc.select("div.flick-ct div.grap_box");
 			if(!weatherSection.isEmpty()) {
-				weatherSection.get(0).select("ul>li").forEach(e -> {
-					timeLineInfos.append(							(e.select("span.btn_time").text().equals("") ? e.select("strong").text() + "시" : e.select("span.btn_time").text()) 
-							+ " " + e.select("span.ico_status2").text() + " "
-							+ e.select("span.wt_temp>em").text() + "℃");
+				doc.select("div.grap_inner").get(0).select("ul>li").forEach(e -> {
+					timeLineInfos.append((e.select("span.btn_time").text().equals("") ? e.select("strong").text() + "시" : e.select("span.btn_time").text()) + " " + e.select("span.ico_status2").text() + " " + e.select("span.wt_temp>em").text()  +"℃ \n");
 				});
 			} else {
 				return "동네를 제대로 입력해주세염 ㅇ(^ㅁ~)ㅇ";
 			}
 			timeLineInfos.append(line);
-			return PrintToSlackUtil.printWeather(weatherText + " " + weatherTemperature + "℃",
-					timeLineInfos.toString());
+			return PrintToSlackUtil.printWeather(weatherText + " " + weatherTemperature + "℃", timeLineInfos.toString());
 		}
 		return null;
 	}
