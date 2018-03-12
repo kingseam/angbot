@@ -245,33 +245,6 @@ public class PrintToSlackUtil{
 
 		return resultMsg.toString();
 	}
-
-
-	public static final String WEATHER_ICON = new StringBuilder()
-			.append("          DZZZZZZZZ8          \n")
-			.append("       ZZZZZZZZZZZZZZZZ       \n")
-			.append("     ZZZZZZZ95WWjBZZZZZZZ     \n")
-			.append("    ZZZZZW           yZZZZy   \n")
-			.append("   ZZZZy               WZZZj  \n")
-			.append("  ZZ9ZB                  ZZZ  \n")
-			.append(" DZ99Z                    ZZz \n")
-			.append(" EZ99Z          8ZZZZZ    8ZZ \n")
-			.append(" EZ99ZZ        ZZZ99ZZZE   ZZ \n")
-			.append(" BZ999ZZZBwwBZZZ999999ZZ   Zz \n")
-			.append("  ZZ999EZZZZZZE9999999ZZ  9Z  \n")
-			.append("  ,ZZ9999999999999999ZZB  ZB  \n")
-			.append("   ,ZZE999999999999EZZB  ZE   \n")
-			.append("     ZZZZE9999999ZZZZ   ZW    \n")
-			.append("       BZZZZZZZZZZE   E8      \n")
-			.append("                    ww        \n")
-			.append("                              \n")
-			.append("       z,    W   E     z    E \n")
-			.append("jZZzZ, Z5   ZZE  ZZj Z9ZZ9wwZ \n")
-			.append("    Z  ZW wZ  EZ Z   DZ Dz jZ \n")
-			.append("    Z  ZW     8ZW    y  wZ8 , \n")
-			.append("    Zw Zj    Z  ZZ     8Z  Z  \n")
-			.append("       Zy    EZZZ       ZZZZ  \n\n")
-			.toString();
 	/**
 	 * 날씨 정보 출력
 	 *
@@ -285,7 +258,6 @@ public class PrintToSlackUtil{
 		StringBuilder weathers = new StringBuilder();
 
 		weathers.append("```\n");
-		weathers.append(WEATHER_ICON);
 		weathers.append(weatherInfo + "\n");
 		weathers.append("시간별 날씨\n");
 		weathers.append(weatherTimeLine + "\n");
