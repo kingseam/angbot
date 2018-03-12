@@ -36,6 +36,8 @@ public class SlackApiController extends BaseApiController {
 
 	WebsocketClientEndpoint websocket;
 
+	WebsocketClientEndpoint websocket2;
+
 	@Autowired
 	JsonResponseHandler jsonHandler;
 
@@ -44,6 +46,9 @@ public class SlackApiController extends BaseApiController {
 
 	@Value("${slack.api.token}")
 	private String token;
+
+	@Value("${slack2.api.token}")
+	private String token2;
 
 	public static final Logger LOG = LoggerFactory.getLogger(SlackApiController.class);
 
@@ -56,6 +61,7 @@ public class SlackApiController extends BaseApiController {
 		Map<String, Object> param = Maps.newConcurrentMap();
 		param.put("token", token);
 		param.put("pretty", 1);
+		param.put("batch_presence_aware", 1);
 		if (websocket == null || websocket.userSession == null) {
 			rtmDto = slackRestTemplate.getApiCaller(CodeSlack.GET_RTMSTART.getUrl(), rtmDto.getClass(), param);
 			if (rtmDto.isResult()) {
@@ -67,7 +73,7 @@ public class SlackApiController extends BaseApiController {
 				message.put("channel", "C2F31LCTZ");
 				message.put("text", "`angbot RTM serv start...`");
 
-				slackCommService.initUser();
+				slackCommService.initUser(token);
 				ObjectMapper om = new ObjectMapper();
 				// websocket.sendMessage(om.writeValueAsString(message));
 				Thread.sleep(25000);
@@ -97,15 +103,6 @@ public class SlackApiController extends BaseApiController {
 		}
 
 		websocket = null;
-		return resDto;
-	}
-
-	@RequestMapping(value = "/user/init", method = RequestMethod.GET)
-	public @ResponseBody ApiResDto userInit() throws IOException {
-		ApiResDto resDto = new ApiResDto("rtmConnect");
-
-		slackCommService.initUser();
-
 		return resDto;
 	}
 

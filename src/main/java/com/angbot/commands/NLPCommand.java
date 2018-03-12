@@ -1,10 +1,8 @@
 package com.angbot.commands;
 
-import java.util.List;
 import java.util.StringTokenizer;
 
 import org.openkoreantext.processor.OpenKoreanTextProcessorJava;
-import org.openkoreantext.processor.phrase_extractor.KoreanPhraseExtractor;
 import org.openkoreantext.processor.tokenizer.KoreanTokenizer;
 
 import com.angbot.service.CommandApiService;
@@ -52,11 +50,11 @@ public class NLPCommand extends CommCommand{
 	    // 입니다(Adjective(이다): 12, 3), ㅋㅋㅋ(KoreanParticle: 15, 3), #한국어(Hashtag: 19, 4)]
 
 	    // Phrase extraction
-	    List<KoreanPhraseExtractor.KoreanPhrase> phrases = OpenKoreanTextProcessorJava.extractPhrases(tokens, true, false);
-	    System.out.println(phrases);
+	    //List<KoreanPhraseExtractor.KoreanPhrase> phrases = OpenKoreanTextProcessorJava.extractPhrases(tokens, true, false);
+	    //System.out.println(phrases);
 	    // [한국어(Noun: 0, 3), 처리(Noun: 5, 2), 처리하는 예시(Noun: 5, 7), 예시(Noun: 10, 2), #한국어(Hashtag: 18, 4)]
 
-		return phrases.toString();
+		return OpenKoreanTextProcessorJava.tokensToJavaKoreanTokenList(tokens).toString();
 	}
 
 	public boolean validation(StringTokenizer token){

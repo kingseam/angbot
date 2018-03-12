@@ -1,6 +1,8 @@
 package com.angbot.common;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.StringTokenizer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,8 +14,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.angbot.commands.CommCommand;
+import com.angbot.domain.User;
 import com.angbot.service.SlackCmdCache;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.gson.Gson;
 
 public class SlackMessageHandler implements MessageHandler {
 	public final String CMD_TYPE = "!";
@@ -45,10 +50,15 @@ public class SlackMessageHandler implements MessageHandler {
 					result.put("text", "!사용법");
 					userSession.getAsyncRemote().sendText(om.writeValueAsString(result));
 				}
-				
+
 				if (result.get("type") != null && result.get("type").equals(PRESENCE_TYPE)) {
 					if(SlackCmdCache.userMap.containsKey(result.get("user"))){
+						if(result.get("presence").equals("active")){
+							System.out.println("user = " + result.get("user"));
+							System.out.println("map = " + SlackCmdCache.userMap.get(result.get("user")));
+						}
 						SlackCmdCache.userMap.get(result.get("user")).setActive(result.get("presence"));
+
 					}else{
 						//임시땜빵. 나중에 누가.. 제대로 추가좀.
 						((CommCommand) SlackCmdCache.cmdMap.get("!유저 동기화")).run(new StringTokenizer(""));
@@ -62,12 +72,29 @@ public class SlackMessageHandler implements MessageHandler {
 						if (token.countTokens() > 0) {
 							cmd = token.nextToken();
 						}
-						if (SlackCmdCache.cmdMap.containsKey(cmd)) {
+
+						if("!유저".equals(cmd)){
+							List<String> _userList = Lists.newArrayList();
+							for(Entry<String, User> entry : SlackCmdCache.userMap.entrySet()){
+								_userList.add(entry.getValue().getId());
+							}
+							Map<String, Object> _temp = Maps.newConcurrentMap();
+							_temp.put("type", "presence_query");
+							_temp.put("ids", _userList);
+							Gson gson = new Gson();
+							String json = gson.toJson(_temp);
+							System.out.println(json);
+							userSession.getAsyncRemote().sendText(json);
+							Thread.sleep(1000);
+							result.put("text",((CommCommand) SlackCmdCache.cmdMap.get(cmd)).run(token));
+						}else if (SlackCmdCache.cmdMap.containsKey(cmd)) {
+							System.out.println("이게들어오나?");
 							String resultMsg = "`해당 " + cmd + " 명령은 이미 수행중입니다.`";
 							if (!((CommCommand) SlackCmdCache.cmdMap.get(cmd)).isState()) {
 								resultMsg = ((CommCommand) SlackCmdCache.cmdMap.get(cmd)).run(token);
 							}
 							result.put("text", resultMsg);
+
 						} else {
 							result.put("text", "`미지원 명령어 입니다.`");
 						}

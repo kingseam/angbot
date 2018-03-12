@@ -21,7 +21,7 @@ public class SlackCmdCache {
 	public static Map<String, Object> cmdMap = new LinkedHashMap<String, Object>();
 	public static Map<String, User> userMap = new LinkedHashMap<String, User>();
 
-	public static final Class[] registerdCommands = {
+	public static final Class<?>[] registerdCommands = {
 			NoticeCommand.class,
 			SlackChannelCommand.class,
 			SlackUserCommand.class,
@@ -37,6 +37,7 @@ public class SlackCmdCache {
     };
 
 	public SlackCmdCache() {
-		// TODO Auto-generated constructor stub
+
 	}
+
 }

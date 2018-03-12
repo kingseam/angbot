@@ -2,7 +2,6 @@ package com.angbot.service;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -49,9 +48,10 @@ public class CommandApiService {
 	@Value("${slack.api.token}")
 	private String token;
 
+
 	public static final Logger LOG = LoggerFactory.getLogger(CommandApiService.class);
 
-	public void initUser() {
+	public void initUser(String token) {
 		/* Set Slack User Info Param */
 		Map<String, Object> param = Maps.newConcurrentMap();
 		param.put("token", token);
@@ -68,7 +68,7 @@ public class CommandApiService {
 				param.put("user", user.getId());
 				ApiPresenceDto result = slackRestTemplate.getApiCaller(CodeSlack.GET_Active.getUrl(), ApiPresenceDto.class, param);
 				user = new User(user, result.getPresence());
-				SlackCmdCache.userMap.put(user.getId(), user);
+				SlackCmdCache.userMap.put(user.getName(), user);
 			}
 		}
 
@@ -79,6 +79,7 @@ public class CommandApiService {
 
 		//return "기능 고도화중";//PrintToSlackUtil.printUser(list);
 	}
+
 
 	public String userList() {
 		return PrintToSlackUtil.printUser();
@@ -325,7 +326,7 @@ public class CommandApiService {
 			String weatherTemperature = weatherElements.select("div.wt_text strong em").text();
 
 			String line = "================\n";
-			
+
 			// timeLine info
 			StringBuilder timeLineInfos = new StringBuilder();
 			timeLineInfos.append(line);
