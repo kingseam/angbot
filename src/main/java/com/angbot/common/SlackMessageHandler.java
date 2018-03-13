@@ -52,16 +52,12 @@ public class SlackMessageHandler implements MessageHandler {
 				}
 
 				if (result.get("type") != null && result.get("type").equals(PRESENCE_TYPE)) {
-					if(SlackCmdCache.userMap.containsKey(result.get("user"))){
-						if(result.get("presence").equals("active")){
-							System.out.println("user = " + result.get("user"));
-							System.out.println("map = " + SlackCmdCache.userMap.get(result.get("user")));
-						}
+					if(SlackCmdCache.userMap.get(result.get("user")) != null){
 						SlackCmdCache.userMap.get(result.get("user")).setActive(result.get("presence"));
-
 					}else{
 						//임시땜빵. 나중에 누가.. 제대로 추가좀.
 						//((CommCommand) SlackCmdCache.cmdMap.get("!유저 동기화")).run(new StringTokenizer(""));
+						System.out.println("누구냐?" + result.get("user"));
 					}
 				}
 
@@ -85,7 +81,6 @@ public class SlackMessageHandler implements MessageHandler {
 							String json = gson.toJson(_temp);
 							System.out.println(json);
 							userSession.getAsyncRemote().sendText(json);
-							Thread.sleep(2000);
 							result.put("text",((CommCommand) SlackCmdCache.cmdMap.get(cmd)).run(token));
 						}else if (SlackCmdCache.cmdMap.containsKey(cmd)) {
 							String resultMsg = "`해당 " + cmd + " 명령은 이미 수행중입니다.`";
