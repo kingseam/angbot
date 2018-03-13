@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import java.util.StringTokenizer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.websocket.Session;
 
@@ -84,9 +85,11 @@ public class SlackMessageHandler implements MessageHandler {
 							Gson gson = new Gson();
 							String json = gson.toJson(_temp);
 							System.out.println(json);
-							userSession.getAsyncRemote().sendText(json);
-							Thread.sleep(1500);
-							result.put("text",((CommCommand) SlackCmdCache.cmdMap.get(cmd)).run(token));
+							Future<Void> req = userSession.getAsyncRemote().sendText(json);
+							req.get();
+							if(req.isDone()){
+								result.put("text",((CommCommand) SlackCmdCache.cmdMap.get(cmd)).run(token));
+							}
 						}else if (SlackCmdCache.cmdMap.containsKey(cmd)) {
 							System.out.println("이게들어오나?");
 							String resultMsg = "`해당 " + cmd + " 명령은 이미 수행중입니다.`";
