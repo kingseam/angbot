@@ -3,7 +3,7 @@ package com.angbot.util;
 import java.util.List;
 import java.util.Map;
 
-import org.nd4j.linalg.io.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.angbot.commands.CommCommand;
 import com.angbot.domain.User;
