@@ -16,7 +16,7 @@ public class User {
 	}
 
 	public User(SUser user) {
-		this.nick = user.getName();
+		this.nick = user.getProfile().getDisplay_name();
 		this.id = user.getId();
 		this.name = user.getName();
 		System.out.println("this.name="+this.name);

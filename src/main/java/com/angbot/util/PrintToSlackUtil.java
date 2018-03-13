@@ -3,6 +3,8 @@ package com.angbot.util;
 import java.util.List;
 import java.util.Map;
 
+import org.nd4j.linalg.io.StringUtils;
+
 import com.angbot.commands.CommCommand;
 import com.angbot.domain.User;
 import com.angbot.service.SlackCmdCache;
@@ -201,39 +203,47 @@ public class PrintToSlackUtil{
 		resultMsg.append("*접속 유저 정보*\n");
 		for(java.util.Map.Entry<String, User> user : SlackCmdCache.userMap.entrySet()){
 			if(user.getValue().getActive().equals("active")){
-				if(!user.getValue().getName().equals("angbot")){
-					resultMsg.append(user.getValue().getName().substring(0, user.getValue().getName().length()-1)+"*");
-					if(user.getValue().getNick().equals("angbot")){
+				if(!user.getValue().getName().equals("angbot") && !user.getValue().getName().equals("polly")){
+					if(StringUtils.isEmpty(user.getValue().getNick())){
+						resultMsg.append(user.getValue().getName().substring(0, user.getValue().getName().length()-1)+"*");
+					}else{
+						if(user.getValue().getNick().length() > 1){
+							resultMsg.append(user.getValue().getNick().substring(0, user.getValue().getName().length()-1)+"*");
+						}else{
+							resultMsg.append(user.getValue().getName().substring(0, user.getValue().getName().length()-1)+"*");
+						}
+					}
+					if(user.getValue().getName().equals("angbot")){
 						resultMsg.append(" => 얘는 봇 ");
 					}
-					if(user.getValue().getNick().equals("angmagun")){
+					if(user.getValue().getName().equals("angmagun")){
 						resultMsg.append(" => 루팡 ");
 					}
-					if(user.getValue().getNick().equals("eminency")){
+					if(user.getValue().getName().equals("eminency")){
 						resultMsg.append(" => 방장님 ");
 					}
-					if(user.getValue().getNick().equals("beginnerjsp")){
+					if(user.getValue().getName().equals("beginnerjsp")){
 						resultMsg.append(" => 여자킬러 ");
 					}
-					if(user.getValue().getNick().equals("loustler")){
+					if(user.getValue().getName().equals("loustler")){
 						resultMsg.append(" => 늪개발자");
 					}
-					if(user.getValue().getNick().equals("reactor")){
+					if(user.getValue().getName().equals("reactor")){
 						resultMsg.append(" => 개발변태 ");
 					}
-					if(user.getValue().getNick().equals("yuaming")){
+					if(user.getValue().getName().equals("yuaming")){
 						resultMsg.append(" => 여자1호");
 					}
-					if(user.getValue().getNick().equals("sejongpark")){
+					if(user.getValue().getName().equals("sejongpark")){
 						resultMsg.append(" => 남자1호(스토커)");
 					}
-					if(user.getValue().getNick().equals("foxrain")){
+					if(user.getValue().getName().equals("foxrain")){
 						resultMsg.append(" => 봇?");
 					}
-					if(user.getValue().getNick().equals("yohan")){
+					if(user.getValue().getName().equals("yohan")){
 						resultMsg.append(" => 정치갑");
 					}
-					if(user.getValue().getNick().equals("doubles")){
+					if(user.getValue().getName().equals("doubles")){
 						resultMsg.append(" => 행복전도사");
 					}
 					resultMsg.append("\n");

@@ -85,7 +85,7 @@ public class SlackMessageHandler implements MessageHandler {
 							String json = gson.toJson(_temp);
 							System.out.println(json);
 							userSession.getAsyncRemote().sendText(json);
-							Thread.sleep(1000);
+							Thread.sleep(1500);
 							result.put("text",((CommCommand) SlackCmdCache.cmdMap.get(cmd)).run(token));
 						}else if (SlackCmdCache.cmdMap.containsKey(cmd)) {
 							System.out.println("이게들어오나?");
