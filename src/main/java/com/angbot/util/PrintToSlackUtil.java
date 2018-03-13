@@ -208,7 +208,7 @@ public class PrintToSlackUtil{
 						resultMsg.append(user.getValue().getName().substring(0, user.getValue().getName().length()-1)+"*");
 					}else{
 						if(user.getValue().getNick().length() > 1){
-							resultMsg.append(user.getValue().getNick().substring(0, user.getValue().getName().length()-1)+"*");
+							resultMsg.append(user.getValue().getNick().substring(0, user.getValue().getNick().length()-1)+"*");
 						}else{
 							resultMsg.append(user.getValue().getName().substring(0, user.getValue().getName().length()-1)+"*");
 						}
