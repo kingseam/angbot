@@ -44,7 +44,7 @@ public class SlackMessageHandler implements MessageHandler {
 						SlackCmdCache.userMap.get(result.get("user")).setActive("active");
 					}else{
 						//임시땜빵. 나중에 누가.. 제대로 추가좀.
-						((CommCommand) SlackCmdCache.cmdMap.get("!유저 동기화")).run(new StringTokenizer(""));
+						//((CommCommand) SlackCmdCache.cmdMap.get("!유저 동기화")).run(new StringTokenizer(""));
 					}
 					result.put("type", MSG_TYPE);
 					result.put("text", "!사용법");
@@ -61,7 +61,7 @@ public class SlackMessageHandler implements MessageHandler {
 
 					}else{
 						//임시땜빵. 나중에 누가.. 제대로 추가좀.
-						((CommCommand) SlackCmdCache.cmdMap.get("!유저 동기화")).run(new StringTokenizer(""));
+						//((CommCommand) SlackCmdCache.cmdMap.get("!유저 동기화")).run(new StringTokenizer(""));
 					}
 				}
 
