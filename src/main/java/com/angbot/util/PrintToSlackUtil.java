@@ -246,7 +246,7 @@ public class PrintToSlackUtil{
 					if(user.getValue().getName().equals("doubles")){
 						resultMsg.append(" => 행복전도사");
 					}
-					if(user.getValue().getName().equals("Independant")){
+					if("Independant".equals(user.getValue().getNick())){
 						resultMsg.append(" => 하이모");
 					}
 					resultMsg.append("\n");
