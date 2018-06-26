@@ -13,7 +13,6 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.angbot.commands.CommCommand;
@@ -45,8 +44,7 @@ public class CommandApiService {
 	@Autowired
 	GitHubRestTemplate gitHubRestTemplate;
 
-	@Value("${slack.api.token}")
-	private String token;
+	private String token = "xoxb-260337753687-PqJ8e3zOi3CewmHpH604nFcz";
 
 
 	public static final Logger LOG = LoggerFactory.getLogger(CommandApiService.class);

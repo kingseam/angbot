@@ -44,8 +44,8 @@ public class SlackApiController extends BaseApiController {
 	@Autowired
 	CommandApiService slackCommService;
 
-	@Value("${slack.api.token}")
-	private String token;
+
+	private String token = "xoxb-260337753687-PqJ8e3zOi3CewmHpH604nFcz";
 
 	@Value("${slack2.api.token}")
 	private String token2;
@@ -71,7 +71,7 @@ public class SlackApiController extends BaseApiController {
 				Map<String, String> message = Maps.newConcurrentMap();
 				message.put("type", "message");
 				message.put("channel", "C2F31LCTZ");
-				message.put("text", "`angbot RTM serv start...`");
+				message.put("text", "`angbot RTM serv start.ss..`");
 
 				slackCommService.initUser(token);
 				ObjectMapper om = new ObjectMapper();
