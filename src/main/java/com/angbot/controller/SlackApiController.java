@@ -45,7 +45,7 @@ public class SlackApiController extends BaseApiController {
 	CommandApiService slackCommService;
 
 
-	private String token = "xoxp-83093164416-84823314131-205424323856-bf9e7fdc897dbdd68aab175757ed9f88";
+	private String token = "xoxb-121088845621-SCo8q6PwliiOup4GQ8et13Uq";
 
 	@Value("${slack2.api.token}")
 	private String token2;

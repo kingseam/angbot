@@ -44,7 +44,7 @@ public class CommandApiService {
 	@Autowired
 	GitHubRestTemplate gitHubRestTemplate;
 
-	private String token = "xoxp-83093164416-84823314131-205424323856-bf9e7fdc897dbdd68aab175757ed9f88";
+	private String token = "xoxb-121088845621-SCo8q6PwliiOup4GQ8et13Uq";
 
 
 	public static final Logger LOG = LoggerFactory.getLogger(CommandApiService.class);
