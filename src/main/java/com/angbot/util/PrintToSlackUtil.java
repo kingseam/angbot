@@ -241,7 +241,7 @@ public class PrintToSlackUtil{
 						resultMsg.append(" => 봇?");
 					}
 					if(user.getValue().getName().equals("yohan")){
-						resultMsg.append(" => 정치갑");
+						resultMsg.append(" => 인민개발자");
 					}
 					if(user.getValue().getName().equals("doubles")){
 						resultMsg.append(" => 행복전도사");
