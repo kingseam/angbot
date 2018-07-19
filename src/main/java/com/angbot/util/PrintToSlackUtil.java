@@ -223,7 +223,7 @@ public class PrintToSlackUtil{
 						resultMsg.append(" => 방장님 ");
 					}
 					if(user.getValue().getName().equals("beginnerjsp")){
-						resultMsg.append(" => 여자킬러 ");
+						resultMsg.append(" => 캡틴초 ");
 					}
 					if(user.getValue().getName().equals("loustler")){
 						resultMsg.append(" => 늪개발자");
@@ -244,7 +244,13 @@ public class PrintToSlackUtil{
 						resultMsg.append(" => 인민개발자");
 					}
 					if(user.getValue().getName().equals("doubles")){
-						resultMsg.append(" => 행복전도사");
+						resultMsg.append(" => 갓덥;
+					}
+					if(user.getValue().getName().equals("jippyong")){
+						resultMsg.append(" => 갓뽕;
+					}
+					if(user.getValue().getName().equals("쓰레기")){
+						resultMsg.append(" => 갓생;
 					}
 					if("Independant".equals(user.getValue().getNick())){
 						resultMsg.append(" => 하이모");
