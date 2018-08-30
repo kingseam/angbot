@@ -244,12 +244,12 @@ public class PrintToSlackUtil{
 						resultMsg.append(" => 인민개발자");
 					}
 					if(user.getValue().getName().equals("doubles")){
-						resultMsg.append(" => 갓덥");
+						resultMsg.append(" => 농덥,구라의 아이콘");
 					}
 					if(user.getValue().getName().equals("jippyong")){
 						resultMsg.append(" => 갓뽕");
 					}
-					if(user.getValue().getName().equals("쓰레기")){
+					if(user.getValue().getName().equals("야생간지")){
 						resultMsg.append(" => 갓생");
 					}
 					if("Independant".equals(user.getValue().getNick())){
