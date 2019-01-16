@@ -1,5 +1,6 @@
 package com.angbot.service;
 
+import com.angbot.common.Wordvec;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.List;
@@ -44,6 +45,8 @@ public class CommandApiService {
 	@Autowired
 	GitHubRestTemplate gitHubRestTemplate;
 
+	Wordvec vec;
+
 
 	private String token_front = "xoxb-121088845621";
 	private String token_back = "nwOMTsXAnVeNYBb1kPFIfCqQ";
@@ -67,9 +70,10 @@ public class CommandApiService {
 			for (SUser sUser : userDto.getResponseItem()) {
 				user = new User(sUser);
 				param.put("user", user.getId());
-				ApiPresenceDto result = slackRestTemplate.getApiCaller(CodeSlack.GET_Active.getUrl(), ApiPresenceDto.class, param);
-				user = new User(user, result.getPresence());
 				SlackCmdCache.userMap.put(user.getId(), user);
+				//ApiPresenceDto result = slackRestTemplate.getApiCaller(CodeSlack.GET_Active.getUrl(), ApiPresenceDto.class, param);
+				//user = new User(user, result.getPresence());
+
 			}
 		}
 
@@ -390,6 +394,8 @@ public class CommandApiService {
 				cmd = (CommCommand) cons.newInstance(this);
 				SlackCmdCache.cmdMap.put(cmd.command(), cmd);
 			}
+			vec = new Wordvec();
+			vec.run();
 		} catch (Exception e) {
 			// TODO 예외 확인 필요
 			e.printStackTrace();

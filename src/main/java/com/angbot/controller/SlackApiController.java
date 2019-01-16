@@ -67,6 +67,7 @@ public class SlackApiController extends BaseApiController {
 		if (websocket == null || websocket.userSession == null) {
 			rtmDto = slackRestTemplate.getApiCaller(CodeSlack.GET_RTMSTART.getUrl(), rtmDto.getClass(), param);
 			if (rtmDto.isResult()) {
+				System.setProperty("org.bytedeco.javacpp.logger.debug","true");
 				slackCommService.initCmd();
 				websocket = new WebsocketClientEndpoint.WebsocketClientBuilder().setURI(rtmDto.getUrl())
 						.setServer(new SlackMessageHandler()).build();

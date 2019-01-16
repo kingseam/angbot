@@ -249,8 +249,8 @@ public class PrintToSlackUtil{
 					if(user.getValue().getName().equals("jippyong")){
 						resultMsg.append(" => 갓뽕");
 					}
-					if(user.getValue().getName().equals("야생간지")){
-						resultMsg.append(" => 갓생");
+					if(user.getValue().getNick().equals("야생간지")){
+						resultMsg.append(" => 기만의 아이콘, 쓰레기아님");
 					}
 					if("Independant".equals(user.getValue().getNick())){
 						resultMsg.append(" => 하이모");

@@ -1,5 +1,7 @@
 package com.angbot.common;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -9,7 +11,12 @@ import java.util.concurrent.Executors;
 
 import javax.websocket.Session;
 
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.openkoreantext.processor.OpenKoreanTextProcessorJava;
+import org.openkoreantext.processor.tokenizer.KoreanTokenizer;
+import org.openkoreantext.processor.tokenizer.KoreanTokenizer.KoreanToken;
+import org.openkoreantext.processor.util.KoreanPos;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +26,8 @@ import com.angbot.service.SlackCmdCache;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
+import scala.collection.JavaConverters;
+import scala.collection.Seq;
 
 public class SlackMessageHandler implements MessageHandler {
 	public final String CMD_TYPE = "!";
@@ -94,6 +103,26 @@ public class SlackMessageHandler implements MessageHandler {
 							result.put("text", "`미지원 명령어 입니다.`");
 						}
 						userSession.getAsyncRemote().sendText(om.writeValueAsString(result));
+					}else if(result.get("text") != null){
+					//}else if(result.get("text") != null && SlackCmdCache.userMap.get(result.get("user")).getNick().equals("angmagun")){
+						String[] tokens = result.get("text").split(" ");
+						for(String temp : tokens){
+							List<String> dvec = Wordvec.vec.similarWordsInVocabTo(temp,0.7);
+							System.out.println("temp=" + temp);
+							List<String> resultList = new ArrayList<>();
+							for(String tem : dvec){
+								System.out.println("tem=" + tem);
+								resultList.add(tem);
+							}
+							if(resultList.size() > 0) {
+								result.put("text", "`" + SlackCmdCache.userMap.get(result.get("user")).getNick() + "문장에서 쓰레기 유사단어 감지(" + String.join(",", resultList) + ") 너님 쓰레기아님`");
+								userSession.getAsyncRemote().sendText(om.writeValueAsString(result));
+							}
+
+							//System.out.println("dvec="+dvec);
+							//result.put("text", "`" + SlackCmdCache.userMap.get(result.get("user")).getNick() + temp +" 아님.`");
+							//userSession.getAsyncRemote().sendText(om.writeValueAsString(result));
+						}
 					}
 				}
 			} catch (Exception e) {
